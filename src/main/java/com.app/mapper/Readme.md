@@ -1,0 +1,3 @@
+- mapper包用于存放mybatis的mapper接口，以连接数据库并执行相应操作
+- 接口继承BaseMapper,BaseMapper中已经实现了基本的增删改查方法,不需要再自己写
+- 命名规范: 表名+mapper

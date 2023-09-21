@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <!-- 引入Bootstrap样式 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        /* 自定义样式 */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .form-group {
+            width: 300px; /* 调整输入框宽度 */
+            margin-bottom: 10px; /* 调整表单组之间的垂直间距 */
+        }
+
+        .login-button {
+            display: flex;
+            justify-content: center;
+        }
+
+        .register-button {
+            display: flex;
+            justify-content: center;
+        }
+
+        .button-group {
+            width: 300px; /* 调整按钮组的宽度 */
+            margin-top: 10px; /* 调整按钮组与上方元素的间距 */
+            text-align: center; /* 居中按钮组 */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>用户注册</h2>
+    <form id="registerForm">
+        <div class="form-group">
+            <label for="username" style="margin-right: 10px;">用户名:</label>
+            <input type="text" class="form-control" id="username" placeholder="请输入用户名" required>
+        </div>
+        <div class="form-group">
+            <label for="password" style="margin-right: 35px;">密码:</label>
+            <input type="password" class="form-control" id="password" placeholder="请输入密码" required>
+        </div>
+        <div class="form-group">
+            <label for="password" style="margin-right: 35px;">密码:</label>
+            <input type="password" class="form-control" id="conformpassword" placeholder="请输入密码" required>
+        </div>
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">注册</button>
+            <a  href="login.html" class="btn btn-link">登录</a>
+        </div>
+    </form>
+</div>
+
+<!-- 引入jQuery和Bootstrap的JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).submit(function (){
+        //提交登录表单时的操作
+        $("#registerForm").submit()(function (event){
+            //阻止表单的默认提交行为
+            event.preventDefault();
+            var username = $("#username").val();
+            var password = $("#password").val();
+            var conpassword = $("#conformpassword").val();
+            console.log("username: " + username + " password: " + password+"conpassword: "+conpassword);
+            //可以在此处添加验证逻辑(前端验证)
+            if(password!==conpassword){
+                alert("两次密码不一致");
+                return;
+            }
+            var formData={
+                username: username,
+                password: password
+            };
+            //发送ajax请求
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/register",
+                data: formData,
+                success: function(response){
+                    console.log("success:"+response);
+                    if(response==="success") {
+                        alert("注册成功");
+                    }
+                    else{
+                        alert("注册失败,该用户已存在");
+                    }
+                },
+                error: function(response){
+                    console.log("error:"+response);
+                }
+            })
+        })
+    })
+</script>
+</body>
+</html>
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="zh-CN">-->
+
+<!--<head>-->
+<!--    <meta charset="utf-8" />-->
+<!--    <meta name="viewport" content="width=device-width,initial-scale=1.0" />-->
+<!--    <title>用户注册</title>-->
+<!--    <script type="application/javascript">-->
+<!--        //如果需要执行操作,写在init里,就可以自动执行-->
+<!--        function init() {-->
+<!--            // 请求多个用户的信息-->
+<!--        }-->
+<!--        init();-->
+<!--        function register() {-->
+<!--            console.log("注册")-->
+<!--            //获取文本框发出的内容-->
+<!--            var name = document.getElementById("name").value;-->
+<!--            var pwd = document.getElementById("pwd").value;-->
+<!--            console.log("name:" + name + "pwd:" + pwd);-->
+<!--            // 该对象用于向后端发送一个请求-->
+<!--            var req = new XMLHttpRequest();-->
+<!--            // 请求方式+链接-->
+<!--            req.open("POST", "http://localhost:8080/WebProject_war_exploded/register?name=" +-->
+<!--                name + "&pwd=" + pwd, true);-->
+<!--            req.send();-->
+<!--            req.onreadystatechange = function () {-->
+<!--                if (req.readyState === 4) {-->
+<!--                    var staus = req.status; //200-->
+<!--                    if (staus === 200) {-->
+<!--                        var data = req.responseText;-->
+<!--                        console.log(data);-->
+<!--                        if (data === "success") {-->
+<!--                            alter("注册成功")-->
+<!--                        } else {-->
+<!--                            alert("注册失败,用户已存在");-->
+<!--                            -->
+<!--                        }-->
+<!--                    }-->
+<!--                }-->
+<!--            }-->
+<!--        }-->
+<!--    </script>-->
+<!--</head>-->
+
+<!--<body>-->
+<!--    <div class="login">-->
+<!--        <h2>用户注册</h2>-->
+<!--        <div class="login_box">-->
+<!--            <input type="text" name='name' id='name' required />-->
+<!--            <label for="name">用户名</label>-->
+<!--        </div>-->
+<!--        <div class="login_box">-->
+<!--            <input type="password" name='pwd' id='pwd' required="required">-->
+<!--            <label for="pwd">密码</label>-->
+<!--        </div>-->
+<!--        <a href="javascript:register()">-->
+<!--            注册-->
+<!--            <span></span>-->
+<!--            <span></span>-->
+<!--            <span></span>-->
+<!--            <span></span>-->
+<!--        </a>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <a href="http://localhost:8080/WebProject_war_exploded/login.html">-->
+<!--            返回登录界面-->
+<!--            <span></span>-->
+<!--            <span></span>-->
+<!--            <span></span>-->
+<!--            <span></span>-->
+<!--        </a>-->
+<!--    </div>-->
+<!--</body>-->
+<!--</html>-->

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <title>签到</title>
+</head>
+
+<body>
+    <h1>签到系统!
+    </h1>
+    <h1 th:text="${userID}"></h1>
+    <br />
+    <form id="signIn">
+        <button type="submit" onclick="">签到</button>
+    </form>
+
+
+    <!-- 引入jQuery和Bootstrap的JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // 监听表单提交事件
+            $("#signIn").submit(function (event) {
+                event.preventDefault(); // 阻止表单的默认提交行为
+                //获取当前界面的URL
+                var url = window.location.href;
+                //获取当前界面的userID
+                var userID = url.match(/\/user\/(\d+)$/);
+                // 获取输入的用户名和密码
+                console.log("userID" + " " + userID);
+
+                // 在这里可以添加验证逻辑，例如检查输入是否为空等
+
+                var formData = {
+                    userID: userID
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/attendance",  // 替换为实际的后台处理URL
+                    data: formData,
+                    success: function (response) {
+                        // 在这里可以处理后台返回的响应
+                        // 例如根据响应结果进行页面跳转或显示错误信息等
+                        console.log("Success" + response);
+                        if (response == 'success') {
+                            window.alert("签到成功");
+                            //window.location.href = "blog.html";
+                        } else {
+                            window.alert("近日已签到");
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:" + error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
