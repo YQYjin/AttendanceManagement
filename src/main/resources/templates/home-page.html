@@ -5,15 +5,58 @@
 
 <head>
     <title>签到</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        /* 自定义样式 */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .form-group {
+            width: 300px;
+            /* 调整输入框宽度 */
+            margin-bottom: 10px;
+            /* 调整表单组之间的垂直间距 */
+        }
+
+        .login-button {
+            display: flex;
+            justify-content: center;
+        }
+
+        .register-button {
+            display: flex;
+            justify-content: center;
+        }
+
+        .button-group {
+            width: 300px;
+            /* 调整按钮组的宽度 */
+            margin-top: 10px;
+            /* 调整按钮组与上方元素的间距 */
+            text-align: center;
+            /* 居中按钮组 */
+        }
+    </style>
 </head>
 
 <body>
-    <h1>签到系统!
-    </h1>
-    <h1 th:text="${userID}"></h1>
+    <h1>欢迎！</h1>
+    <h1 th:text="${userName}"></h1>
     <br />
     <form id="signIn">
-        <button type="submit" onclick="">签到</button>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">签到</button>
+        </div>
+    </form>
+    <form id="checkOut">
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">离岗</button>
+        </div>
     </form>
 
 
@@ -29,7 +72,8 @@
                 //获取当前界面的URL
                 var url = window.location.href;
                 //获取当前界面的userID
-                var userID = url.match(/\/user\/(\d+)$/);
+                //js使用正则表达式返回的是一个捕获组,若要获取匹配的内容,应获取捕获组中第2个值
+                var userID = url.match(/\/user\/(\d+)$/)[1];
                 // 获取输入的用户名和密码
                 console.log("userID" + " " + userID);
 
@@ -41,7 +85,8 @@
                 $.ajax({
                     type: "POST",
                     url: "http://localhost:8080/attendance",  // 替换为实际的后台处理URL
-                    data: formData,
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(formData), //将表单转换为JSON格式
                     success: function (response) {
                         // 在这里可以处理后台返回的响应
                         // 例如根据响应结果进行页面跳转或显示错误信息等
@@ -50,7 +95,7 @@
                             window.alert("签到成功");
                             //window.location.href = "blog.html";
                         } else {
-                            window.alert("近日已签到");
+                            window.alert("今日已签到");
                         }
                     },
                     error: function (error) {
@@ -58,6 +103,39 @@
                     }
                 });
             });
+            $("#checkOut").submit(function(event){
+                event.preventDefault(); // 阻止表单的默认提交行为
+                //获取当前界面的URL
+                var url = window.location.href;
+                //获取当前界面的userID
+                //js使用正则表达式返回的是一个捕获组,若要获取匹配的内容,应获取捕获组中第2个值
+                var userID = url.match(/\/user\/(\d+)$/)[1];
+                console.log("userID" + " " + userID);
+                var formData = {
+                    userID: userID
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/checkout",  // 替换为实际的后台处理URL
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(formData), //将表单转换为JSON格式
+                    success: function (response) {
+                        // 在这里可以处理后台返回的响应
+                        // 例如根据响应结果进行页面跳转或显示错误信息等
+                        console.log("Success" + response);
+                        if (response == 'success') {
+                            window.alert("离岗登记成功");
+                        } else if(response=='noInfo'){
+                            window.alert("今日未签到");
+                        }else{
+                            window.alert("已离岗，请勿重复操作");
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:" + error);
+                    }
+                });
+            })
         });
     </script>
 </body>

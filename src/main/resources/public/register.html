@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>注册</title>
@@ -16,8 +17,10 @@
         }
 
         .form-group {
-            width: 300px; /* 调整输入框宽度 */
-            margin-bottom: 10px; /* 调整表单组之间的垂直间距 */
+            width: 300px;
+            /* 调整输入框宽度 */
+            margin-bottom: 10px;
+            /* 调整表单组之间的垂直间距 */
         }
 
         .login-button {
@@ -31,80 +34,116 @@
         }
 
         .button-group {
-            width: 300px; /* 调整按钮组的宽度 */
-            margin-top: 10px; /* 调整按钮组与上方元素的间距 */
-            text-align: center; /* 居中按钮组 */
+            width: 300px;
+            /* 调整按钮组的宽度 */
+            margin-top: 10px;
+            /* 调整按钮组与上方元素的间距 */
+            text-align: center;
+            /* 居中按钮组 */
         }
     </style>
 </head>
+
 <body>
-<div class="container">
-    <h2>用户注册</h2>
-    <form id="registerForm">
-        <div class="form-group">
-            <label for="username" style="margin-right: 10px;">用户名:</label>
-            <input type="text" class="form-control" id="username" placeholder="请输入用户名" required>
-        </div>
-        <div class="form-group">
-            <label for="password" style="margin-right: 35px;">密码:</label>
-            <input type="password" class="form-control" id="password" placeholder="请输入密码" required>
-        </div>
-        <div class="form-group">
-            <label for="password" style="margin-right: 35px;">密码:</label>
-            <input type="password" class="form-control" id="conformpassword" placeholder="请输入密码" required>
-        </div>
-        <div class="button-group">
-            <button type="submit" class="btn btn-primary">注册</button>
-            <a  href="login.html" class="btn btn-link">登录</a>
-        </div>
-    </form>
-</div>
+    <div class="container">
+        <h2>用户注册</h2>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="username" style="margin-right: 10px;">用户名:</label>
+                <input type="text" class="form-control" id="username" placeholder="请输入用户名" required>
+            </div>
+            <div class="form-group">
+                <label for="password" style="margin-right: 35px;">密码:</label>
+                <input type="password" class="form-control" id="password" placeholder="请输入密码" required>
+            </div>
+            <div class="form-group">
+                <label for="password" style="margin-right: 35px;">密码:</label>
+                <input type="password" class="form-control" id="conformpassword" placeholder="请输入密码" required>
+            </div>
+            <div class="form-group">
+                <label for="gender" style="margin-right: 35px;">性别:</label>
+                <input type="text" class="form-control" id="gender" placeholder="请输入性别(男:女)" required>
+            </div>
+            <div class="form-group">
+                <label for="phone" style="margin-right: 35px;">电话号码:</label>
+                <input type="text" class="form-control" id="phone" placeholder="请输入电话号码" required>
+            </div>
+            <div class="form-group">
+                <label for="salary" style="margin-right: 35px;">薪资:</label>
+                <input type="text" class="form-control" id="salary" placeholder="请输入薪资" required>
+            </div>
+            <div class="form-group">
+                <label for="department" style="margin-right: 35px;">部门:</label>
+                <input type="text" class="form-control" id="department" placeholder="请输入部门编号" required>
+            </div>
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">注册</button>
+                <a href="login.html" class="btn btn-link">登录</a>
+            </div>
+        </form>
+    </div>
 
-<!-- 引入jQuery和Bootstrap的JavaScript -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- 引入jQuery和Bootstrap的JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-<script>
-    $(document).submit(function (){
-        //提交登录表单时的操作
-        $("#registerForm").submit()(function (event){
-            //阻止表单的默认提交行为
-            event.preventDefault();
-            var username = $("#username").val();
-            var password = $("#password").val();
-            var conpassword = $("#conformpassword").val();
-            console.log("username: " + username + " password: " + password+"conpassword: "+conpassword);
-            //可以在此处添加验证逻辑(前端验证)
-            if(password!==conpassword){
-                alert("两次密码不一致");
-                return;
-            }
-            var formData={
-                username: username,
-                password: password
-            };
-            //发送ajax请求
-            $.ajax({
-                type: "POST",
-                url: "http://localhost:8080/register",
-                data: formData,
-                success: function(response){
-                    console.log("success:"+response);
-                    if(response==="success") {
-                        alert("注册成功");
-                    }
-                    else{
-                        alert("注册失败,该用户已存在");
-                    }
-                },
-                error: function(response){
-                    console.log("error:"+response);
+    <script>
+        $(document).ready(function () {
+            //提交登录表单时的操作
+            $("#registerForm").submit(function (event) {
+                //阻止表单的默认提交行为
+                console.log("注册");
+                event.preventDefault();
+                var username = $("#username").val();
+                var password = $("#password").val();
+                var gender = $("#gender").val();
+                var salary = $("#salary").val();
+                var phone = $("#phone").val();
+                var department = $("#department").val();
+                var conpassword = $("#conformpassword").val();
+                console.log(username);
+                //可以在此处添加验证逻辑(前端验证)
+                if (password !== conpassword) {
+                    alert("两次密码不一致");
+                    return;
                 }
+                //验证数据是否为空
+                if (username === "" || password === "" || gender === "" || salary === "" || phone === "" || department === "") {
+                    alert("请填写完整信息");
+                    return;
+                }
+                var formData = {
+                    username: username,
+                    password: password,
+                    gender: gender,
+                    salary: salary,
+                    phone: phone,
+                    department: department
+                };
+                //发送ajax请求
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/register",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        console.log("success:" + response);
+                        if (response === "success") {
+                            alert("注册成功");
+                        }
+                        else {
+                            alert("注册失败,该用户已存在");
+                        }
+                    },
+                    error: function (response) {
+                        console.log("error:" + response);
+                    }
+                })
             })
         })
-    })
-</script>
+    </script>
 </body>
+
 </html>
 
 

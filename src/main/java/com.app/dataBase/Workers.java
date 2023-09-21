@@ -10,5 +10,6 @@ public class Workers {
     private String phoneNumber;
     private int salary;
     private int departmentNum;
+    private String password;
 
 }

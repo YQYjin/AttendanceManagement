@@ -1,9 +1,9 @@
 package com.app.postData;
 
 public class AttendanceData {
-    private String workerName;
+    private String userID;
 
-    public String getWorkerName() {
-        return workerName;
+    public String getUserID() {
+        return userID;
     }
 }

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>登录</title>
+    <title>管理员登录</title>
     <!-- 引入Bootstrap样式 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <style>
@@ -46,11 +46,11 @@
 
 <body>
     <div class="container">
-        <h2>用户登录</h2>
+        <h2>管理员登录</h2>
         <form id="loginForm">
             <div class="form-group">
-                <label for="username" style="margin-right: 10px;">用户名:</label>
-                <input type="text" class="form-control" id="username" placeholder="请输入用户名" required>
+                <label for="username" style="margin-right: 10px;">管理员用户名:</label>
+                <input type="text" class="form-control" id="username" placeholder="请输入管理员用户名" required>
             </div>
             <div class="form-group">
                 <label for="password" style="margin-right: 35px;">密码:</label>
@@ -58,8 +58,7 @@
             </div>
             <div class="button-group">
                 <button type="submit" class="btn btn-primary">登录</button>
-                <a href="register.html" class="btn btn-link">注册</a>
-                <a href="admin-login.html" class="btn btn-link">管理员登录</a>
+                <a href="login.html" class="btn btn-link">返回</a>
             </div>
         </form>
     </div>
@@ -87,7 +86,7 @@
                 };
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:8080/login",  // 替换为实际的后台处理URL
+                    url: "http://localhost:8080/adminlogin",  // 替换为实际的后台处理URL
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(formData),
                     success: function (response) {
@@ -95,7 +94,7 @@
                         // 例如根据响应结果进行页面跳转或显示错误信息等
                         console.log("Success" + response);
                         if (response == 'success') {
-                            window.location.href = "user/" + username;
+                            window.location.href = "admin/" + username;
                         } else {
                             alert("用户名或密码错误");
                         }
