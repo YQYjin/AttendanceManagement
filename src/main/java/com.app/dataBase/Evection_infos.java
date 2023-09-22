@@ -11,4 +11,5 @@ public class Evection_infos {
     private String reason;
     private String    startTime;
     private String    endTime;
+    private boolean isPass;
 }

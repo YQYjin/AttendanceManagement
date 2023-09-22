@@ -39,4 +39,9 @@ public class homeControl {
         model.addAttribute("userName",userName);
         return "admin-home-page";
     }
+    @GetMapping("/test/{userID}")
+    public String testHomePage(@PathVariable String userID, Model model){
+        model.addAttribute("userName",userID);
+        return "layuitest";
+    }
 }

@@ -58,7 +58,6 @@
             </div>
             <div class="button-group">
                 <button type="submit" class="btn btn-primary">登录</button>
-                <a href="register.html" class="btn btn-link">注册</a>
                 <a href="admin-login.html" class="btn btn-link">管理员登录</a>
             </div>
         </form>
@@ -80,7 +79,8 @@
                 console.log(username + " " + password);
 
                 // 在这里可以添加验证逻辑，例如检查输入是否为空等
-
+                //判断字符串是否含有数字
+                
                 var formData = {
                     userID: username,
                     password: password

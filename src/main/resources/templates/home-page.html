@@ -1,84 +1,166 @@
 <!DOCTYPE html>
-<meta charset="UTF-8">
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 
-
 <head>
-    <title>签到</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <title>请假申请页面</title>
+    <!-- 引入layui的CSS文件 -->
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
     <style>
         /* 自定义样式 */
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+        .custom-header {
+            font-size: 24px;
+            /* 调整标题字体大小 */
         }
 
-        .form-group {
-            width: 300px;
-            /* 调整输入框宽度 */
-            margin-bottom: 10px;
-            /* 调整表单组之间的垂直间距 */
-        }
-
-        .login-button {
-            display: flex;
-            justify-content: center;
-        }
-
-        .register-button {
-            display: flex;
-            justify-content: center;
-        }
-
-        .button-group {
-            width: 300px;
-            /* 调整按钮组的宽度 */
-            margin-top: 10px;
-            /* 调整按钮组与上方元素的间距 */
-            text-align: center;
-            /* 居中按钮组 */
+        .custom-welcome {
+            font-size: 20px;
+            /* 欢迎消息字体大小 */
         }
     </style>
 </head>
 
 <body>
-    <h1>欢迎！</h1>
-    <h1 th:text="${userName}"></h1>
-    <br />
-    <form id="signIn">
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">签到</button>
+    <div class="layui-container">
+        <div class="layui-row">
+            <!-- 左侧部分 -->
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <p>
+                        <br>
+                        <br>
+                        <br>
+                    </p>
+                    <div class="layui-card-header custom-header" th:text="${userName+',欢迎来到考勤系统!'}"></div>
+                    <p>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                    </p>
+                    <div class="layui-card-header custom-header">操作</div>
+                    <div class="layui-card-body">
+                        <button class="layui-btn " id="signInBtn">签到</button>
+                        <button class="layui-btn " id="signOutBtn">离岗</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 右侧部分 -->
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <p>
+                        <br>
+                        <br>
+                        <br>
+                    </p>
+                    <div class="layui-card-header custom-header"></div>
+                    <p>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                    </p>
+                    <div class="layui-card-header custom-header">请假申请</div>
+                    <div class="layui-card-body">
+                        <form class="layui-form">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">开始日期</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="start_date" id="start_date" lay-verify="date"
+                                        placeholder="请选择日期" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">结束日期</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="end_date" id="end_date" lay-verify="date"
+                                        placeholder="请选择日期" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">请假原因</label>
+                                <div class="layui-input-block">
+                                    <textarea name="reason" id="reason" lay-verify="required" placeholder="请输入请假原因"
+                                        class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">请假类型</label>
+                                <div class="layui-input-inline">
+                                    <select name="leave_type" id="leave_type" lay-verify="required">
+                                        <option value="">请选择</option>
+                                        <option value="病假">病假</option>
+                                        <option value="事假">事假</option>
+                                        <option value="出差">出差</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="formSubmit"
+                                        id="formBtn">提交申请</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-    </form>
-    <form id="checkOut">
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">离岗</button>
-        </div>
-    </form>
+    </div>
 
-
+    <!-- 引入layui的JS文件 -->
+    <script src="/layui/layui.js"></script>
+    <script src="/static/layui/layui.js"></script>
     <!-- 引入jQuery和Bootstrap的JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
     <script>
+        layui.use(['form', 'laydate'], function () {
+            var form = layui.form;
+            var laydate = layui.laydate;
+
+            // 渲染日期选择组件
+            laydate.render({
+                elem: '#start_date',
+                type: 'date',
+                format: 'yyyy-MM-dd'
+            });
+
+            laydate.render({
+                elem: '#end_date',
+                type: 'date',
+                format: 'yyyy-MM-dd'
+            });
+            // 监听表单提交事件
+            form.on('submit(formSubmit)', function (data) {
+                console.log(data.field); // 打印表单提交的数据
+                // 在这里可以添加提交表单的逻辑
+                return false; // 阻止表单跳转
+            });
+        });
+        //ajax监听表单提交
         $(document).ready(function () {
             // 监听表单提交事件
-            $("#signIn").submit(function (event) {
-                event.preventDefault(); // 阻止表单的默认提交行为
-                //获取当前界面的URL
+            //签到
+            $("#signInBtn").click(function (event) {
+                console.log("按下signInBtn按钮");
+                //阻止按钮的默认行为,防止页面刷新
+                event.preventDefault();
+                //获取表单数据
                 var url = window.location.href;
                 //获取当前界面的userID
                 //js使用正则表达式返回的是一个捕获组,若要获取匹配的内容,应获取捕获组中第2个值
                 var userID = url.match(/\/user\/(\d+)$/)[1];
-                // 获取输入的用户名和密码
                 console.log("userID" + " " + userID);
-
-                // 在这里可以添加验证逻辑，例如检查输入是否为空等
-
                 var formData = {
                     userID: userID
                 };
@@ -103,12 +185,12 @@
                     }
                 });
             });
-            $("#checkOut").submit(function(event){
+            //离岗登记
+            $("#signOutBtn").click(function (event) {
                 event.preventDefault(); // 阻止表单的默认提交行为
                 //获取当前界面的URL
                 var url = window.location.href;
                 //获取当前界面的userID
-                //js使用正则表达式返回的是一个捕获组,若要获取匹配的内容,应获取捕获组中第2个值
                 var userID = url.match(/\/user\/(\d+)$/)[1];
                 console.log("userID" + " " + userID);
                 var formData = {
@@ -135,7 +217,59 @@
                         console.log("Error:" + error);
                     }
                 });
-            })
+            });
+            //提交请假申请
+            $("#formBtn").click(function (event) {
+                console.log("按下formBtn按钮");
+                //阻止按钮的默认行为,防止页面刷新
+                event.preventDefault();
+
+                //获取表单数据
+                var start_date = $("#start_date").val();
+                var end_date = $("#end_date").val();
+                var reason = $("#reason").val();
+                var leave_type = $("#leave_type").val();
+                //获取用户ID
+                var url = window.location.href;
+                var userID = url.match(/\/user\/(\d+)$/)[1];
+
+                //控制台输出表单数据
+                console.log("start_date" + " " + start_date);
+                console.log("end_date" + " " + end_date);
+                console.log("reason" + " " + reason);
+                console.log("leave_type" + " " + leave_type);
+                console.log("userID" + " " + userID);
+
+
+                var formData = {
+                    userID: userID,
+                    start_date: start_date,
+                    end_date: end_date,
+                    reason: reason,
+                    type: leave_type
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/leave/submit",  // 替换为实际的后台处理URL
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(formData), //将表单转换为JSON格式
+                    success: function (response) {
+                        // 在这里可以处理后台返回的响应
+                        // 例如根据响应结果进行页面跳转或显示错误信息等
+                        console.log("Success" + response);
+                        if (response == 'success') {
+                            window.alert("提交成功");
+                            //window.location.href = "blog.html";
+                        } else {
+                            window.alert("提交失败");
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:" + error);
+                    }
+                });
+            });
         });
     </script>
 </body>
