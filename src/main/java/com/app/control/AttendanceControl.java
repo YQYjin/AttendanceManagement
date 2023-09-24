@@ -1,8 +1,10 @@
 package com.app.control;
 
 import com.app.dataBase.Attendances;
+import com.app.dataBase.LeaveInfoWithName;
 import com.app.dataBase.Workers;
 import com.app.mapper.AttendancesMapper;
+import com.app.mapper.MyLeaveInfosMapper;
 import com.app.postData.AttendanceData;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.gson.Gson;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -21,6 +24,8 @@ import java.util.Objects;
 public class AttendanceControl {
     @Autowired
     private AttendancesMapper attendancesMapper;
+    @Autowired
+    private MyLeaveInfosMapper myLeaveInfosMapper;
 
     @PostMapping ("/attendance")
     public String attendance(@RequestBody Map<String, String> data) {
@@ -74,6 +79,24 @@ public class AttendanceControl {
         attendances.setLeaveTime(timeFormat.format(date));
         attendancesMapper.updateById(attendances);
         return "success";
+    }
+    @GetMapping("/leave/all")
+    public List<LeaveInfoWithName> getAllLeave(){
+        List<LeaveInfoWithName> infos=myLeaveInfosMapper.selectAllLeaveWithName();
+        //输出查询到的数据
+        for(LeaveInfoWithName info:infos){
+            System.out.println(info.getLeaveNum()+info.getWorkerName());
+        }
+        return infos;
+    }
+    @GetMapping("/evection/all")
+    public List<Attendances> getAllAttendance(){
+        List<Attendances> attendances=attendancesMapper.selectList(null);
+        //输出查询到的数据
+        for(Attendances attendance:attendances){
+            System.out.println(attendance);
+        }
+        return attendances;
     }
 //    @PostMapping
 //    public String signIn(@RequestBody AttendanceData data){

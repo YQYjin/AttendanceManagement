@@ -13,3 +13,5 @@ spring:
         cache: false
         mode: HTML
         enabled: true
+mybatis-plus:
+    mapper-locations: classpath:com/app/mapper/*.xml

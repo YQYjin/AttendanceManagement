@@ -9,7 +9,7 @@ public class Evection_infos {
     private int evectionNum;
     private int workerNum;
     private String reason;
-    private String    startTime;
-    private String    endTime;
-    private boolean isPass;
+    private String   startTime;
+    private String   endTime;
+    private byte isPass;
 }

@@ -1,0 +1,11 @@
+<!-- resources/mapper/YourEntityMapper.xml -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.mapper.MyLeaveInfosMapper">
+    <select id="selectAllLeaveWithName" resultType="com.app.dataBase.LeaveInfoWithName">
+        select leave_num, leave_infos.worker_num, type, reason, start_time, end_time, is_pass, worker_name
+        from leave_infos join workers w on w.worker_num = leave_infos.worker_num;
+    </select>
+</mapper>

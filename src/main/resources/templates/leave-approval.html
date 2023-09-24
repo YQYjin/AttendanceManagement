@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>请假信息</title>
@@ -12,6 +13,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="layui-container">
         <h1 class="layui-header">请假信息列表</h1>
@@ -25,7 +27,7 @@
                     <th lay-data="{field:'endTime', width:150}">结束时间</th>
                     <th lay-data="{field:'reason'}">原因</th>
                     <th lay-data="{field:'type', width:100}">类型</th>
-                    <th lay-data="{field:'isApproved', width:100}">是否通过审批</th>
+                    <th lay-data="{field:'isApproved', width:100}">状态</th>
                     <th lay-data="{fixed:'right', width:150, align:'center', toolbar:'#bar'}">操作</th>
                 </tr>
             </thead>
@@ -34,8 +36,8 @@
 
     <!-- 表格操作列的按钮模板 -->
     <script type="text/html" id="bar">
-        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="approve">同意请假</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="cancel">取消请假</a>
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="approve">通过</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="cancel">不通过</a>
     </script>
 
     <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
@@ -64,7 +66,7 @@
                     { field: 'endTime', width: 120, title: '结束时间' },
                     { field: 'reason', title: '原因' },
                     { field: 'type', width: 100, title: '类型' },
-                    { field: 'isApproved', width: 100, title: '是否通过审批' },
+                    { field: 'isApproved', width: 100, title: '状态' },
                     { fixed: 'right', width: 200, align: 'center', toolbar: '#bar', title: '操作' }
                 ]],
                 page: true
@@ -89,4 +91,5 @@
         });
     </script>
 </body>
+
 </html>
