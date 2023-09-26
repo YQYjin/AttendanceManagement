@@ -24,8 +24,7 @@ import java.util.Objects;
 public class AttendanceControl {
     @Autowired
     private AttendancesMapper attendancesMapper;
-    @Autowired
-    private MyLeaveInfosMapper myLeaveInfosMapper;
+
 
     @PostMapping ("/attendance")
     public String attendance(@RequestBody Map<String, String> data) {
@@ -80,24 +79,7 @@ public class AttendanceControl {
         attendancesMapper.updateById(attendances);
         return "success";
     }
-    @GetMapping("/leave/all")
-    public List<LeaveInfoWithName> getAllLeave(){
-        List<LeaveInfoWithName> infos=myLeaveInfosMapper.selectAllLeaveWithName();
-        //输出查询到的数据
-        for(LeaveInfoWithName info:infos){
-            System.out.println(info.getLeaveNum()+info.getWorkerName());
-        }
-        return infos;
-    }
-    @GetMapping("/evection/all")
-    public List<Attendances> getAllAttendance(){
-        List<Attendances> attendances=attendancesMapper.selectList(null);
-        //输出查询到的数据
-        for(Attendances attendance:attendances){
-            System.out.println(attendance);
-        }
-        return attendances;
-    }
+
 //    @PostMapping
 //    public String signIn(@RequestBody AttendanceData data){
 //        String name=data.getWorkerName();

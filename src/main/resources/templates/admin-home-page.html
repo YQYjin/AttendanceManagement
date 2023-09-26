@@ -53,262 +53,80 @@
 </head>
 
 <body>
-    <h1>欢迎！</h1>
-    <h1 th:text="${userName}"></h1>
+<h1>欢迎！</h1>
+<h1 th:text="${userName}"></h1>
 
-    <a href="register.html" class="btn btn-primary">新员工注册</a>
+<a href="register.html" class="btn btn-primary">新员工注册</a>
 
-    <div class="layui-container">
-        <h1 class="layui-header">请假信息列表</h1>
-        <!-- 这里设置display: none 是避免多余的表头显示 -->
-        <table class="layui-table" lay-filter="leaveInfoTable" id="leaveInfoTable" style="display: none;">
-            <thead>
-                <tr>
-                    <th lay-data="{field:'leaveNum', width:100}">请假编号</th>
-                    <th lay-data="{field:'workerNum', width:100}">员工编号</th>
-                    <th lay-data="{field:'workerName', width:100}">员工名称</th>
-                    <th lay-data="{field:'startTime', width:150}">开始时间</th>
-                    <th lay-data="{field:'endTime', width:150}">结束时间</th>
-                    <th lay-data="{field:'reason'}">原因</th>
-                    <th lay-data="{field:'type', width:100}">类型</th>
-                    <th lay-data="{field:'isPass', width:100}">状态</th>
-                    <th lay-data="{fixed:'right', width:150, align:'center', toolbar:'#bar'}">操作</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
+<div class="layui-container">
+    <h1 class="layui-header">请假信息列表</h1>
+    <!-- 这里设置display: none 是避免多余的表头显示 -->
+    <table class="layui-table" lay-filter="leaveInfoTable" id="leaveInfoTable" style="display: none;">
+        <thead>
+        <tr>
+            <th lay-data="{field:'leaveNum', width:100}">请假编号</th>
+            <th lay-data="{field:'workerNum', width:100}">员工编号</th>
+            <th lay-data="{field:'workerName', width:100}">员工名称</th>
+            <th lay-data="{field:'startTime', width:150}">开始时间</th>
+            <th lay-data="{field:'endTime', width:150}">结束时间</th>
+            <th lay-data="{field:'reason'}">原因</th>
+            <th lay-data="{field:'type', width:100}">类型</th>
+            <th lay-data="{field:'isPass', width:100}">状态</th>
+            <th lay-data="{fixed:'right', width:150, align:'center', toolbar:'#bar'}">操作</th>
+        </tr>
+        </thead>
+    </table>
+</div>
 
-    <div class="layui-container">
-        <h1 class="layui-header">请假信息列表</h1>
-        <!-- 这里设置display: none 是避免多余的表头显示 -->
-        <table class="layui-table" lay-filter="leaveInfoTable" id="evectionInfoTable" style="display: none;">
-            <thead>
-                <tr>
-                    <th lay-data="{field:'evectionNum', width:100}">出差编号</th>
-                    <th lay-data="{field:'workerNum', width:100}">员工编号</th>
-                    <th lay-data="{field:'employeeName', width:100}">员工名称</th>
-                    <th lay-data="{field:'startTime', width:150}">开始时间</th>
-                    <th lay-data="{field:'endTime', width:150}">结束时间</th>
-                    <th lay-data="{field:'reason'}">原因</th>
-                    <th lay-data="{field:'type', width:100}">类型</th>
-                    <th lay-data="{field:'isPass', width:100}">状态</th>
-                    <th lay-data="{fixed:'right', width:150, align:'center', toolbar:'#bar'}">操作</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
+<div class="layui-container">
+    <h1 class="layui-header">出差信息列表</h1>
+    <!-- 这里设置display: none 是避免多余的表头显示 -->
+    <table class="layui-table" lay-filter="evectionInfoTable" id="evectionInfoTable" style="display: none;">
+        <thead>
+        <tr>
+            <th lay-data="{field:'evectionNum', width:100}">出差编号</th>
+            <th lay-data="{field:'workerNum', width:100}">员工编号</th>
+            <th lay-data="{field:'employeeName', width:100}">员工名称</th>
+            <th lay-data="{field:'startTime', width:150}">开始时间</th>
+            <th lay-data="{field:'endTime', width:150}">结束时间</th>
+            <th lay-data="{field:'reason'}">原因</th>
+            <th lay-data="{field:'isPass', width:100}">状态</th>
+            <th lay-data="{fixed:'right', width:150, align:'center', toolbar:'#bar'}">操作</th>
+        </tr>
+        </thead>
+    </table>
+</div>
 
 
-    <!-- 引入jQuery和Bootstrap的JavaScript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- 引入jQuery和Bootstrap的JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-    <script>
+<!-- 渲染请假审批表格的js -->
+<script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/layui/2.5.7/layui.js"></script>
+
+<script type="text/html" id="bar">
+    <button class="layui-btn layui-btn-normal layui-btn-xs" lay-event="approve">通过</button>
+    <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="cancel">不通过</button>
+</script>
+<script src="../static/layui/admin-home-page.js" type="text/javascript"></script>
+<script th:src="@{/js/admin-home-page.js}"></script>
+<script th:src="@{/static/js/admin-home-page.js}"></script>
+
+
+
+<script>
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        // 调用函数渲染表格
+        // 页面加载完成时渲染表格
         $(document).ready(function () {
-            // 监听表单提交事件
-            $("#signIn").submit(function (event) {
-                event.preventDefault(); // 阻止表单的默认提交行为
-                //获取当前界面的URL
-                var url = window.location.href;
-                //获取当前界面的userID
-                //js使用正则表达式返回的是一个捕获组,若要获取匹配的内容,应获取捕获组中第2个值
-                var userID = url.match(/\/user\/(\d+)$/)[1];
-                // 获取输入的用户名和密码
-                console.log("userID" + " " + userID);
-                // 在这里可以添加验证逻辑，例如检查输入是否为空等
-                var formData = {
-                    userID: userID
-                };
-                $.ajax({
-                    type: "POST",
-                    url: "http://localhost:8080/attendance",  // 替换为实际的后台处理URL
-                    contentType: "application/json;charset=utf-8",
-                    data: JSON.stringify(formData), //将表单转换为JSON格式
-                    success: function (response) {
-                        // 在这里可以处理后台返回的响应
-                        // 例如根据响应结果进行页面跳转或显示错误信息等
-                        console.log("Success" + response);
-                        if (response == 'success') {
-                            window.alert("签到成功");
-                            //window.location.href = "blog.html";
-                        } else {
-                            window.alert("今日已签到");
-                        }
-                    },
-                    error: function (error) {
-                        console.log("Error:" + error);
-                    }
-                });
-            });
-            $("#checkOut").submit(function (event) {
-                event.preventDefault(); // 阻止表单的默认提交行为
-                //获取当前界面的URL
-                var url = window.location.href;
-                //获取当前界面的userID
-                //js使用正则表达式返回的是一个捕获组,若要获取匹配的内容,应获取捕获组中第2个值
-                var userID = url.match(/\/user\/(\d+)$/)[1];
-                console.log("userID" + " " + userID);
-                var formData = {
-                    userID: userID
-                };
-                $.ajax({
-                    type: "POST",
-                    url: "http://localhost:8080/checkout",  // 替换为实际的后台处理URL
-                    contentType: "application/json;charset=utf-8",
-                    data: JSON.stringify(formData), //将表单转换为JSON格式
-                    success: function (response) {
-                        // 在这里可以处理后台返回的响应
-                        // 例如根据响应结果进行页面跳转或显示错误信息等
-                        console.log("Success" + response);
-                        if (response == 'success') {
-                            window.alert("离岗登记成功");
-                        } else if (response == 'noInfo') {
-                            window.alert("今日未签到");
-                        } else {
-                            window.alert("已离岗，请勿重复操作");
-                        }
-                    },
-                    error: function (error) {
-                        console.log("Error:" + error);
-                    }
-                });
-            })
+            renderLeaveTable(table);
+            renderEvectionTable(table);
         });
-    </script>
-
-    <!-- 渲染请假审批表格的js -->
-    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/layui/2.5.7/layui.js"></script>
-
-    <script type="text/html" id="bar">
-        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="approve">通过</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="cancel">不通过</a>
-    </script>
-
-    <script>
-        layui.use(['table', 'form'], function () {
-            var table = layui.table;
-            var url = window.location.href;
-            var userID = url.match(/\/user\/(\d+)$/)[1];
-            var leaveInfoData;
-            var evectionInfoData;
-            //获取请假信息
-            function getLeaveData() {
-                $.ajax({
-                    type: "GET",
-                    url: "http://localhost:8080/leave/all",  
-                    success: function (response) {
-                        console.log("Success" + response);
-                        if (response == 'success') {
-                            leaveInfoData = JSON.parse(response);
-                        }
-                    },
-                    error: function (error) {
-                        console.log("Error:" + error);
-                    }
-                });
-            }
-            // 获取出差信息
-            function getEvectionData() {
-                $.ajax({
-                    type: "GET",
-                    url: "http://localhost:8080/evection/all",  
-                    success: function (response) {
-                        console.log("Success" + response);
-                        if (response == 'success') {
-                            evectionInfoData = JSON.parse(response);
-                        }
-                    },
-                    error: function (error) {
-                        console.log("Error:" + error);
-                    }
-                });
-            }
-            // 渲染请假表格
-            function renderLeaveTable() {
-                // 获取请假信息
-                getData();
-                // 渲染表格
-                table.render({
-                    elem: '#leaveInfoTable',
-                    data: leaveInfoData,
-                    toolbar: '#toolbar',
-                    defaultToolbar: ['filter', 'exports'],
-                    cols: [[
-                        { field: 'leaveNum', width: 100, title: '请假编号' },
-                        { field: 'workerNum', width: 100, title: '员工编号' },
-                        { field: 'workerName', width: 100, title: '员工名称' },
-                        { field: 'startTime', width: 120, title: '开始时间' },
-                        { field: 'endTime', width: 120, title: '结束时间' },
-                        { field: 'reason', title: '原因' },
-                        { field: 'type', width: 100, title: '类型' },
-                        { field: 'isPass', width: 100, title: '状态' },
-                        { fixed: 'right', width: 200, align: 'center', toolbar: '#bar', title: '操作' }
-                    ]],
-                    page: true
-                });
-            }
-            // 渲染出差表格
-            function renderEvectionTable() {
-                // 获取请假信息
-                getData();
-                // 渲染表格
-                table.render({
-                    elem: '#evectionInfoTable',
-                    data: leaveInfoData,
-                    toolbar: '#toolbar',
-                    defaultToolbar: ['filter', 'exports'],
-                    cols: [[
-                        { field: 'evectionNum', width: 100, title: '请假编号' },
-                        { field: 'workerNum', width: 100, title: '员工编号' },
-                        { field: 'workerName', width: 100, title: '员工名称' },
-                        { field: 'startTime', width: 120, title: '开始时间' },
-                        { field: 'endTime', width: 120, title: '结束时间' },
-                        { field: 'reason', title: '原因' },
-                        { field: 'type', width: 100, title: '类型' },
-                        { field: 'isPass', width: 100, title: '状态' },
-                        { fixed: 'right', width: 200, align: 'center', toolbar: '#bar', title: '操作' }
-                    ]],
-                    page: true
-                });
-            }
-            // 调用函数渲染表格
-            // 页面加载完成时渲染表格
-            renderEvectionTable();
-            renderLeaveTable();
-
-            table.on('toolbar(leaveInfoTable)', function (obj) {
-                if (obj.event === 'approve') {
-                    // 同意请假操作
-                    var checkStatus = table.checkStatus('leaveInfoTable');
-                    var selectedData = checkStatus.data;
-                    // 执行同意请假的逻辑，可以向后台发送请求等
-                    console.log('同意请假的数据：', selectedData);
-                } else if (obj.event === 'cancel') {
-                    // 取消请假操作
-                    var checkStatus = table.checkStatus('leaveInfoTable');
-                    var selectedData = checkStatus.data;
-                    // 执行取消请假的逻辑，可以向后台发送请求等
-                    console.log('取消请假的数据：', selectedData);
-                }
-            });
-            table.on('toolbar(evectionInfoTable)', function (obj) {
-                if (obj.event === 'approve') {
-                    // 同意请假操作
-                    var checkStatus = table.checkStatus('leaveInfoTable');
-                    var selectedData = checkStatus.data;
-                    // 执行同意请假的逻辑，可以向后台发送请求等
-                    console.log('同意出差的数据：', selectedData);
-                } else if (obj.event === 'cancel') {
-                    // 取消请假操作
-                    var checkStatus = table.checkStatus('leaveInfoTable');
-                    var selectedData = checkStatus.data;
-                    // 执行取消请假的逻辑，可以向后台发送请求等
-                    console.log('取消出差的数据：', selectedData);
-                }
-            });
-        });
-    </script>
+    });
+</script>
 </body>
 
 </html>
