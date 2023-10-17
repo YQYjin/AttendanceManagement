@@ -34,14 +34,16 @@ public class ApplyControl {
     }
     @PostMapping("/leave/{leaveNum}/{isPass}")
     public String passLeave(@PathVariable String leaveNum,@PathVariable String isPass){
-        System.out.println(leaveNum+" "+isPass);
+        System.out.println("请假审批:" + leaveNum + " " + isPass);
         Leave_infos leave_infos=leaveInfosMapper.selectById(Integer.parseInt(leaveNum));
         leave_infos.setIsPass(Byte.parseByte(isPass));
         leaveInfosMapper.updateById(leave_infos);
         return "success";
     }
-    @PostMapping("/leave/{evectionNum}/{isPass}")
+
+    @PostMapping("/evection/{evectionNum}/{isPass}")
     public String passEvection(@PathVariable String evectionNum,@PathVariable String isPass){
+        System.out.println("出差审批:" + evectionNum + " " + isPass);
         Leave_infos leave_infos=leaveInfosMapper.selectById(Integer.parseInt(evectionNum));
         leave_infos.setIsPass(Byte.parseByte(isPass));
         leaveInfosMapper.updateById(leave_infos);

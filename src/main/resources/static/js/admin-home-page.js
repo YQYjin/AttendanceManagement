@@ -81,21 +81,52 @@ function renderLeaveTable(table) {
         });
         // tool监听的是表格每一列的工具,而toolbar监听的是表格的工具栏,即表格上方的工具栏,注意区别
         table.on('tool(leaveInfoTable)', function (obj) {
-            console.log("触发事件");
-            console.log(obj.event);
+
             if (obj.event == 'approve') {
                 // 同意请假操作
-                var checkStatus = table.checkStatus('leaveInfoTable');
-                var selectedData = checkStatus.data;
-                //var id=selectedData[0].leaveNum;
+                var selectedData = obj.data;
+                console.log("同意请假", selectedData);
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/leave/" + selectedData.leaveNum + "/1",
+                    contentType: "application/json;charset=utf-8",
+                    success: function (response) {
+                        console.log("Success" + response);
+                        if (response == 'success') {
+                            //重新获取数据并渲染表格
+                            renderLeaveTable(table);
+                        } else {
+                            console.log(("审批失败"));
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:" + error);
+                    }
+                });
+
                 // 执行同意请假的逻辑，可以向后台发送请求等
-                console.log('同意请假的数据：', selectedData);
             } else if (obj.event == 'cancel') {
-                // 取消请假操作
-                var checkStatus = table.checkStatus('leaveInfoTable');
-                var selectedData = checkStatus.data;
-                // 执行取消请假的逻辑，可以向后台发送请求等
-                console.log('取消请假的数据：', selectedData);
+                var selectedData = obj.data;
+                console.log("不同意请假", selectedData);
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/leave/" + selectedData.leaveNum + "/2",
+                    contentType: "application/json;charset=utf-8",
+                    success: function (response) {
+                        console.log("Success" + response);
+                        if (response == 'success') {
+                            //重新获取数据并渲染表格
+                            renderLeaveTable(table);
+                        } else {
+                            console.log(("审批失败"));
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:" + error);
+                    }
+                });
             }
         });
     });
@@ -117,7 +148,7 @@ function renderEvectionTable(table) {
             toolbar: '#toolbar',
             defaultToolbar: ['filter', 'exports'],
             cols: [[
-                {field: 'evectionNum', width: 100, title: '请假编号'},
+                {field: 'evectionNum', width: 100, title: '出差编号'},
                 {field: 'workerNum', width: 100, title: '员工编号'},
                 {field: 'workerName', width: 100, title: '员工名称'},
                 {field: 'startTime', width: 120, title: '开始时间'},
@@ -128,19 +159,55 @@ function renderEvectionTable(table) {
             ]],
             page: true
         });
-        table.on('bar(evectionInfoTable)', function (obj) {
+        table.on('tool(evectionInfoTable)', function (obj) {
             if (obj.event === 'approve') {
                 // 同意请假操作
-                var checkStatus = table.checkStatus('leaveInfoTable');
-                var selectedData = checkStatus.data;
+                var selectedData = obj.data;
                 // 执行同意请假的逻辑，可以向后台发送请求等
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/evection/" + selectedData.evectionNum + "/1",
+                    contentType: "application/json;charset=utf-8",
+                    success: function (response) {
+                        console.log("Success" + response);
+                        if (response == 'success') {
+                            //重新获取数据并渲染表格
+                            renderEvectionTable(table);
+                        } else {
+                            console.log(("审批失败"));
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:" + error);
+                    }
+                });
+
                 console.log('同意出差的数据：', selectedData);
             } else if (obj.event === 'cancel') {
                 // 取消请假操作
-                var checkStatus = table.checkStatus('leaveInfoTable');
-                var selectedData = checkStatus.data;
+                var selectedData = obj.data;
                 // 执行取消请假的逻辑，可以向后台发送请求等
                 console.log('取消出差的数据：', selectedData);
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/evection/" + selectedData.evectionNum + "/2",
+                    contentType: "application/json;charset=utf-8",
+                    success: function (response) {
+                        console.log("Success" + response);
+                        if (response == 'success') {
+                            //重新获取数据并渲染表格
+                            renderEvectionTable(table);
+                        } else {
+                            console.log(("审批失败"));
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:" + error);
+                    }
+                });
+
             }
         });
     });
