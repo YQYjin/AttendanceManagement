@@ -32,6 +32,20 @@ public class ApplyControl {
         List<EvectionInfosWithName> infos=myEvectionInfosMapper.selectAllEvectionWithName();
         return infos;
     }
+    @GetMapping("/leave/{userID}")
+    public List<LeaveInfoWithName> getLeaveByID(@PathVariable String userID){
+        //将userID转为整形
+        int id=Integer.parseInt(userID);
+        List<LeaveInfoWithName> infos=myLeaveInfosMapper.selectAllLeaveWithNameByID(id);
+        return infos;
+    }
+    @GetMapping("/evection/{userID}")
+    public List<EvectionInfosWithName> getEvectionByID(@PathVariable String userID){
+        //将userID转为整形
+        int id=Integer.parseInt(userID);
+        List<EvectionInfosWithName> infos=myEvectionInfosMapper.selectAllEvectionWithNameByID(id);
+        return infos;
+    }
     @PostMapping("/leave/{leaveNum}/{isPass}")
     public String passLeave(@PathVariable String leaveNum,@PathVariable String isPass){
         System.out.println("请假审批:" + leaveNum + " " + isPass);

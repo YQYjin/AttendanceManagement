@@ -32,36 +32,6 @@
                         <br>
                         <br>
                     </p>
-                    <div class="layui-card-header custom-header" th:text="${userName+',欢迎来到考勤系统!'}">
-                        
-                    </div>
-                    <div class="layui-card-body layui-edge-right">
-                        <button class="layui-btn " id="signInBtn">登出</button>
-                        <button class="layui-btn " id="signOutBtn">个人信息</button>
-                    </div>
-                    <p>
-                        
-                        
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                    </p>
-                    <div class="layui-card-header custom-header">操作</div>
-                    <div class="layui-card-body">
-                        <button class="layui-btn " id="signInBtn">签到</button>
-                        <button class="layui-btn " id="signOutBtn">离岗</button>
-                    </div>
-                </div>
-            </div>
-            <!-- 右侧部分 -->
-            <div class="layui-col-md6">
-                <div class="layui-card">
-                    <p>
-                        <br>
-                        <br>
-                        <br>
-                    </p>
                     <div class="layui-card-header custom-header"></div>
                     <p>
                         <br>
@@ -73,14 +43,14 @@
                         <br>
                         <br>
                     </p>
-                    <div class="layui-card-header custom-header">请假及出差申请</div>
+                    <div class="layui-card-header custom-header">个人信息</div>
                     <div class="layui-card-body">
                         <form class="layui-form">
                             <div class="layui-form-item">
-                                <label class="layui-form-label">开始日期</label>
+                                <label class="layui-form-label">姓名</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="start_date" id="start_date" lay-verify="date"
-                                        placeholder="请选择日期" class="layui-input">
+                                    <input type="text" name="userName" id="userName" lay-verify="required"
+                                        class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-form-item">
@@ -120,116 +90,38 @@
             </div>
         </div>
     </div>
-    <div class="layui-container">
-        <div class="layui-row">
-            <!-- 左侧部分 -->
-            <div class="layui-col-md6">
-                <div class="layui-card">
-                    <p>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                    </p>
-                    <div class="layui-card-header custom-header">审批结果</div>
-                    <div class="layui-card-body">
-                        <div class="layui-header custom-header">请假审批结果</div>
-                        <!-- 这里设置display: none 是避免多余的表头显示 -->
-                        <table class="layui-table" lay-filter="leaveInfoTable" id="leaveInfoTable"
-                            style="display: none;">
-                            <thead>
-                                <tr>
-                                    <th lay-data="{field:'leaveNum', width:100}">请假编号</th>
-                                    <th lay-data="{field:'workerNum', width:100}">员工编号</th>
-                                    <th lay-data="{field:'workerName', width:100}">员工名称</th>
-                                    <th lay-data="{field:'startTime', width:150}">开始时间</th>
-                                    <th lay-data="{field:'endTime', width:150}">结束时间</th>
-                                    <th lay-data="{field:'reason'}">原因</th>
-                                    <th lay-data="{field:'type', width:100}">类型</th>
-                                    <th lay-data="{field:'isPass', width:100}">状态</th>
-                                    <th lay-data="{fixed:'right', width:150, align:'center', toolbar:'#bar'}">操作</th>
-                                </tr>
-                            </thead>
-                        </table>
-                        <button class="layui-btn " id="refreshLeave">刷新</button>
-                    </div>
-                    <div class="layui-container">
-                        <div class="layui-header custom-header">出差审批结果</div>
-                        <!-- 这里设置display: none 是避免多余的表头显示 -->
-                        <table class="layui-table" lay-filter="evectionInfoTable" id="evectionInfoTable"
-                            style="display: none;">
-                            <thead>
-                                <tr>
-                                    <th lay-data="{field:'evectionNum', width:100}">出差编号</th>
-                                    <th lay-data="{field:'workerNum', width:100}">员工编号</th>
-                                    <th lay-data="{field:'employeeName', width:100}">员工名称</th>
-                                    <th lay-data="{field:'startTime', width:150}">开始时间</th>
-                                    <th lay-data="{field:'endTime', width:150}">结束时间</th>
-                                    <th lay-data="{field:'reason'}">原因</th>
-                                    <th lay-data="{field:'isPass', width:100}">状态</th>
-                                    <th lay-data="{fixed:'right', width:150, align:'center', toolbar:'#bar'}">操作</th>
-                                </tr>
-                            </thead>
-                        </table>
-                        <button class="layui-btn " id="refreshEvection">刷新</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
 
 
     <!-- 引入layui的JS文件 -->
     <script src="/layui/layui.js"></script>
     <script src="/static/layui/layui.js"></script>
-    <script src="../static/layui/layui.js"></script>
 
     <!-- 引入jQuery和Bootstrap的JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="../static/js/home-page.js"></script>
     <script>
         layui.use(['form', 'laydate'], function () {
-            var table = layui.table;
+            // 渲染审批表格
+            var userID = url.match(/\/user\/(\d+)$/)[1];
+
+            var form = layui.form;
+            var laydate = layui.laydate;
 
             // 渲染日期选择组件
-            layui.laydate.render({
+            laydate.render({
                 elem: '#start_date',
                 type: 'date',
                 format: 'yyyy-MM-dd'
             });
 
-            layui.laydate.render({
+            
+
+            laydate.render({
                 elem: '#end_date',
                 type: 'date',
                 format: 'yyyy-MM-dd'
-            });
-
-            // 渲染审批表格
-            var userID = url.match(/\/user\/(\d+)$/)[1];
-
-            $(document).ready(function () {
-                renderLeaveTable(table,userID);
-                renderEvectionTable(table,userID);
-            });
-
-            var form = layui.form;
-            var laydate = layui.laydate;
-
-            
-            // 监听表单提交事件
-            form.on('submit(formSubmit)', function (data) {
-                console.log(data.field); // 打印表单提交的数据
-                // 在这里可以添加提交表单的逻辑
-                return false; // 阻止表单跳转
             });
         });
         //ajax监听表单提交
@@ -345,10 +237,10 @@
                         console.log("Success" + response);
                         if (response == 'success') {
                             window.alert("提交成功");
-                            
+
                             //刷新表格
-                            renderEvectionTable(table,userID);
-                            renderLeaveTable(table,userID);
+                            renderEvectionTable(table, userID);
+                            renderLeaveTable(table, userID);
                         } else {
                             window.alert("提交失败");
                         }
@@ -357,24 +249,6 @@
                         console.log("Error:" + error);
                     }
                 });
-            });
-            //刷新请假表格
-            $("#refreshLeave").click(function (event) {
-                event.preventDefault(); // 阻止表单的默认提交行为
-                //获取当前界面的URL
-                var url = window.location.href;
-                //获取当前界面的userID
-                var userID = url.match(/\/user\/(\d+)$/)[1];
-                renderLeaveTable(table,userID);
-            });
-            //刷新出差表格
-            $("#refreshEvection").click(function (event) {
-                event.preventDefault(); // 阻止表单的默认提交行为
-                //获取当前界面的URL
-                var url = window.location.href;
-                //获取当前界面的userID
-                var userID = url.match(/\/user\/(\d+)$/)[1];
-                renderEvectionTable(table,userID);
             });
         });
     </script>

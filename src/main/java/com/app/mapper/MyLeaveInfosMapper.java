@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface MyLeaveInfosMapper{
     public List<LeaveInfoWithName> selectAllLeaveWithName();
+
+    public List<LeaveInfoWithName> selectAllLeaveWithNameByID(int worker_num);
 }

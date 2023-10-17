@@ -8,4 +8,8 @@
         select evection_num, evection_infos.worker_num, reason, start_time, end_time, is_pass, worker_name
         from evection_infos join workers w on w.worker_num = evection_infos.worker_num;
     </select>
+    <select id="selectAllEvectionWithNameByID" resultType="com.app.dataBase.EvectionInfosWithName">
+        select evection_num, evection_infos.worker_num, reason, start_time, end_time, is_pass, worker_name
+        from evection_infos join workers w on w.worker_num = evection_infos.worker_num where evection_infos.worker_num = #{worker_num};
+    </select>
 </mapper>

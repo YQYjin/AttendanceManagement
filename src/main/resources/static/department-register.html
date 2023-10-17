@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>注册部门</title>
+    <!-- 引入layui的CSS文件 -->
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <style>
+        /* 自定义样式 */
+        .custom-header {
+            font-size: 24px;
+            /* 调整标题字体大小 */
+        }
+
+        .custom-welcome {
+            font-size: 20px;
+            /* 欢迎消息字体大小 */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layui-container">
+        <div class="layui-row">
+            <!-- 左侧部分 -->
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <p>
+                        <br>
+                        <br>
+                        <br>
+                    </p>
+                    <p>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                    </p>
+                    <div class="layui-card-header custom-header">部门注册</div>
+                    <div class="layui-card-body">
+                        <form class="layui-form">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">名称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="departmentName" id="departmentName" lay-verify="required"
+                                        placeholder="请输入部门名称" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">上班时间</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="start_time" id="start_time" lay-verify="required"
+                                        placeholder="请选择上班时间" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">下班时间</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="end_time" id="end_time" lay-verify="required"
+                                        placeholder="请选择上班时间" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="formSubmit"
+                                        id="registerBtn">注册</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- 引入layui的JS文件 -->
+    <script src="/layui/layui.js"></script>
+    <script src="/static/layui/layui.js"></script>
+    <script src="../static/layui/layui.js"></script>
+
+    <!-- 引入jQuery和Bootstrap的JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>
+        layui.use(['form', 'laydate'], function () {
+            // 渲染审批表格
+
+            var form = layui.form;
+            var laydate = layui.laydate;
+
+            // 渲染日期选择组件
+            laydate.render({
+                elem: '#start_time',
+                type: 'time',
+                format: 'HH:mm:ss'
+            });
+
+            laydate.render({
+                elem: '#end_time',
+                type: 'time',
+                format: 'HH:mm:ss'
+            });
+        });
+        //ajax监听表单提交
+        $(document).ready(function () {
+
+            $("#registerBtn").click(function (event) {
+
+                event.preventDefault();
+                //获取表单数据
+                var departmentName = $("#departmentName").val();
+                var start_time = $("#start_time").val();
+                var end_time = $("#end_time").val();
+
+                var formData = {
+                    departmentName: departmentName,
+                    start_time: start_time,
+                    end_time: end_time
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/department/register",  // 替换为实际的后台处理URL
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(formData), //将表单转换为JSON格式
+                    success: function (response) {
+                        console.log("Success" + response);
+                        if (response == 'success') {
+                            window.alert("注册成功");
+
+                        } else {
+                            window.alert("注册失败" + response);
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:" + error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

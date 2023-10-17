@@ -8,4 +8,9 @@
         select leave_num, leave_infos.worker_num, type, reason, start_time, end_time, is_pass, worker_name
         from leave_infos join workers w on w.worker_num = leave_infos.worker_num;
     </select>
+
+    <select id="selectAllLeaveWithNameByID" resultType="com.app.dataBase.LeaveInfoWithName">
+        select leave_num, leave_infos.worker_num, type, reason, start_time, end_time, is_pass, worker_name
+        from leave_infos join workers w on w.worker_num = leave_infos.worker_num where leave_infos.worker_num = #{worker_num};
+    </select>
 </mapper>
