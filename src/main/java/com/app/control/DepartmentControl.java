@@ -17,7 +17,7 @@ public class DepartmentControl {
     private DepartmentsMapper departmentsMapper;
 
     @PostMapping("/department/register")
-    public String homePage(@RequestBody Map<String,String> data){
+    public String register(@RequestBody Map<String,String> data){
         String name=data.get("departmentName");
         String startTime=data.get("start_time");
         String endTime=data.get("end_time");
@@ -37,6 +37,46 @@ public class DepartmentControl {
         department.setWorkTime(startTime);
         department.setClosingTime(endTime);
         departmentsMapper.insert(department);
+
+        return "success";
+    }
+
+    @PostMapping("/department/query")
+    public Departments query(@RequestBody Map<String,String> data){
+        String name=data.get("departmentName");
+
+        System.out.println("查询部门名称:"+name);
+
+        //根据部门名称查询
+        QueryWrapper<Departments> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("department_name",name);
+        Departments res=departmentsMapper.selectOne(queryWrapper);
+
+
+        return res;
+    }
+
+    @PostMapping("/department/modify")
+    public String modify(@RequestBody Map<String,String> data){
+        String id=data.get("departmentNum");
+        String startTime=data.get("start_time");
+        String endTime=data.get("end_time");
+
+        System.out.println("修改部门ID:"+id+"开始时间:"+startTime+"结束时间:"+endTime);
+
+        QueryWrapper<Departments> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("department_num",id);
+        Departments res=departmentsMapper.selectOne(queryWrapper);
+        if(res==null) {
+            return "该部门不存在";
+        }
+        //根据id修改数据
+        Departments department=new Departments();
+        department.setDepartmentNum(Integer.parseInt(id));
+        department.setWorkTime(startTime);
+        department.setClosingTime(endTime);
+        departmentsMapper.updateById(department);
+
         return "success";
     }
 
