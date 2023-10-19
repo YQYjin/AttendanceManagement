@@ -37,8 +37,8 @@
                     <div class="layui-card-header custom-header" th:text="${userName+',欢迎来到考勤系统!'}">
                     </div>
                     <div class="layui-card-body layui-edge-right">
-                        <button class="layui-btn " id="signInBtn">登出</button>
-                        <button class="layui-btn " id="signOutBtn">个人信息</button>
+                        <button class="layui-btn " id="quitBtn">登出</button>
+                        <button class="layui-btn " id="userInfoBtn">个人信息</button>
                     </div>
                 </div>
             </div>
@@ -55,14 +55,14 @@
                         <br>
                     </p>
                     <div class="layui-card-header custom-header">
-                        
+
                     </div>
                     <!-- <div class="layui-card-body layui-edge-right">
                         <button class="layui-btn " id="signInBtn">登出</button>
                         <button class="layui-btn " id="signOutBtn">个人信息</button>
                     </div> -->
                     <p>
-                        
+
                         <br>
                         <br>
                         <br>
@@ -237,19 +237,19 @@
                 type: 'date',
                 format: 'yyyy-MM-dd'
             });
-
+            var url = window.location.href;
             // 渲染审批表格
             var userID = url.match(/\/user\/(\d+)$/)[1];
 
             $(document).ready(function () {
-                renderLeaveTable(table,userID);
-                renderEvectionTable(table,userID);
+                renderLeaveTable(table);
+                renderEvectionTable(table);
             });
 
             var form = layui.form;
             var laydate = layui.laydate;
 
-            
+
             // 监听表单提交事件
             form.on('submit(formSubmit)', function (data) {
                 console.log(data.field); // 打印表单提交的数据
@@ -370,10 +370,10 @@
                         console.log("Success" + response);
                         if (response == 'success') {
                             window.alert("提交成功");
-                            
+
                             //刷新表格
-                            renderEvectionTable(table,userID);
-                            renderLeaveTable(table,userID);
+                            renderEvectionTable(table, userID);
+                            renderLeaveTable(table, userID);
                         } else {
                             window.alert("提交失败");
                         }
@@ -390,7 +390,7 @@
                 var url = window.location.href;
                 //获取当前界面的userID
                 var userID = url.match(/\/user\/(\d+)$/)[1];
-                renderLeaveTable(table,userID);
+                renderLeaveTable(table, userID);
             });
             //刷新出差表格
             $("#refreshEvection").click(function (event) {
@@ -399,7 +399,18 @@
                 var url = window.location.href;
                 //获取当前界面的userID
                 var userID = url.match(/\/user\/(\d+)$/)[1];
-                renderEvectionTable(table,userID);
+                renderEvectionTable(table, userID);
+            });
+            $("#quitBtn").click(function (event) {
+                event.preventDefault(); // 阻止表单的默认提交行为
+                //跳转到登录界面
+                window.location.href = "http://localhost:8080/login.html";
+            });
+            $("#userInfoBtn").click(function (event) {
+                event.preventDefault(); // 阻止表单的默认提交行为
+                var url = window.location.href;
+                var userID = url.match(/\/user\/(\d+)$/)[1];
+                window.location.href = "http://localhost:8080/userinfo/" + userID;
             });
         });
     </script>

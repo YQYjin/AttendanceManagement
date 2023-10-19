@@ -1,8 +1,10 @@
-function getLeaveData(callback,userID) {
+function getLeaveData(callback) {
     var leaveInfoData;
+    let url = window.location.href;
+    let userID = url.match(/\/user\/(\d+)$/)[1];
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/leave/"+userID,
+        url: "http://localhost:8080/leave/" + userID,
         success: function (response) {
             //console.log(JSON.stringify(response));
             leaveInfoData = response;
@@ -25,11 +27,13 @@ function getLeaveData(callback,userID) {
     return leaveInfoData;
 }
 // 获取出差信息
-function getEvectionData(callback,userID) {
+function getEvectionData(callback) {
     var evectionInfoData;
+    let url = window.location.href;
+    let userID = url.match(/\/user\/(\d+)$/)[1];
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/evection/"+userID,
+        url: "http://localhost:8080/evection/" + userID,
         success: function (response) {
             //console.log(JSON.stringify(response));
             evectionInfoData = response;
@@ -52,7 +56,7 @@ function getEvectionData(callback,userID) {
 }
 
 // 渲染请假表格
-function renderLeaveTable(table,userID) {
+function renderLeaveTable(table, userID) {
     // 获取请假信息
     var leaveInfoData;
     // 由于ajax是异步请求,因此需要在回调函数中获取数据,并渲染表格
@@ -66,23 +70,23 @@ function renderLeaveTable(table,userID) {
             toolbar: '#toolbar',
             defaultToolbar: ['filter', 'exports'],
             cols: [[
-                {field: 'leaveNum', width: 100, title: '请假编号'},
-                {field: 'workerNum', width: 100, title: '员工编号'},
-                {field: 'workerName', width: 100, title: '员工名称'},
-                {field: 'startTime', width: 120, title: '开始时间'},
-                {field: 'endTime', width: 120, title: '结束时间'},
-                {field: 'reason', title: '原因'},
-                {field: 'type', width: 100, title: '类型'},
-                {field: 'isPass', width: 100, title: '状态'},
-                {fixed: 'right', width: 200, align: 'center', toolbar: '#bar', title: '操作'}
+                { field: 'leaveNum', width: 100, title: '请假编号' },
+                { field: 'workerNum', width: 100, title: '员工编号' },
+                { field: 'workerName', width: 100, title: '员工名称' },
+                { field: 'startTime', width: 120, title: '开始时间' },
+                { field: 'endTime', width: 120, title: '结束时间' },
+                { field: 'reason', title: '原因' },
+                { field: 'type', width: 100, title: '类型' },
+                { field: 'isPass', width: 100, title: '状态' },
+                { fixed: 'right', width: 200, align: 'center', toolbar: '#bar', title: '操作' }
             ]],
             page: true
         });
-    },userID);
+    }, userID);
 }
 
 // 渲染出差表格
-function renderEvectionTable(table,userID) {
+function renderEvectionTable(table, userID) {
     // 获取出差信息
     var evectionInfoData;
     // 由于ajax是异步请求,因此需要在回调函数中获取数据,并渲染表格
@@ -97,14 +101,14 @@ function renderEvectionTable(table,userID) {
             toolbar: '#toolbar',
             defaultToolbar: ['filter', 'exports'],
             cols: [[
-                {field: 'evectionNum', width: 100, title: '出差编号'},
-                {field: 'workerNum', width: 100, title: '员工编号'},
-                {field: 'workerName', width: 100, title: '员工名称'},
-                {field: 'startTime', width: 120, title: '开始时间'},
-                {field: 'endTime', width: 120, title: '结束时间'},
-                {field: 'reason', title: '原因'},
-                {field: 'isPass', width: 100, title: '状态'},
-                {fixed: 'right', width: 200, align: 'center', toolbar: '#bar', title: '操作'}
+                { field: 'evectionNum', width: 100, title: '出差编号' },
+                { field: 'workerNum', width: 100, title: '员工编号' },
+                { field: 'workerName', width: 100, title: '员工名称' },
+                { field: 'startTime', width: 120, title: '开始时间' },
+                { field: 'endTime', width: 120, title: '结束时间' },
+                { field: 'reason', title: '原因' },
+                { field: 'isPass', width: 100, title: '状态' },
+                { fixed: 'right', width: 200, align: 'center', toolbar: '#bar', title: '操作' }
             ]],
             page: true
         });

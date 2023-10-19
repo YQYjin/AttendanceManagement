@@ -44,4 +44,9 @@ public class homeControl {
         model.addAttribute("userName",userID);
         return "layuitest";
     }
+    @GetMapping("/userinfo/{userID}")
+    public String userInfoPage(@PathVariable String userID, Model model){
+        //model.addAttribute("userName",userID);
+        return "user-info-page";
+    }
 }

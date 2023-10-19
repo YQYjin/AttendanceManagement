@@ -7,15 +7,21 @@
     <!-- 引入layui的CSS文件 -->
     <link rel="stylesheet" href="/layui/css/layui.css">
     <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/layui/2.5.7/css/layui.css">
     <style>
         /* 自定义样式 */
         .custom-header {
             font-size: 24px;
             /* 调整标题字体大小 */
         }
+        .custom-top-header {
+            font-size: 24px;
+            /* 调整标题字体大小 */
+        }
 
         .custom-welcome {
             font-size: 20px;
+            background-color: aqua;
             /* 欢迎消息字体大小 */
         }
 
@@ -31,24 +37,10 @@
 
 <body>
     <div class="layui-container">
-        <div class="layui-layout layui-layout-admin">
-            <!-- 左侧菜单栏 -->
-            <div class="layui-side">
-                <!-- 这里放置左侧菜单内容 -->
-
-            </div>
-            <!-- 右侧内容区域 -->
-            <div class="layui-body">
-                <!-- 这里放置页面内容 -->
-            </div>
-            <!-- 右上角按钮区域 -->
-            <div class="layui-header">
-                <!-- <div class="header-text custom-header">左侧文字</div> -->
-                <div class="right-top-buttons">
-                    <button class="layui-btn layui-btn">返回管理员界面</button>
-
-                    <!-- 添加更多按钮... -->
-                </div>
+        <div class="layui-header custom-top-header">
+            <!-- <div class="header-text custom-header">左侧文字</div> -->
+            <div class="right-top-buttons">
+                <button class="layui-btn layui-btn">返回管理员界面</button>
 
             </div>
         </div>
@@ -127,7 +119,7 @@
                                     <input type="text" name="departmentName" id="queryName" lay-verify="required"
                                         placeholder="请输入部门名称" class="layui-input">
                                 </div>
-                                <button class="layui-btn" id="queryBtn">查询</button>
+                                <button class="layui-btn" id="queryBtn" lay-submit lay-filter="formSubmit">查询</button>
                                 </p>
                             </div>
                             <div class="layui-form-item">

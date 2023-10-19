@@ -1,8 +1,10 @@
 package com.app.control;
 
 import com.app.dataBase.Admins;
+import com.app.dataBase.WorkerWIthDepartment;
 import com.app.dataBase.Workers;
 import com.app.mapper.AdminMapper;
+import com.app.mapper.MyWorkerMapper;
 import com.app.mapper.WorkersMapper;
 import com.app.postData.LoginData;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -22,6 +24,8 @@ public class WorkerControl {
     private WorkersMapper workerMapper;
     @Autowired
     private AdminMapper adminMapper;
+    @Autowired
+    private MyWorkerMapper myWorkerMapper;
 
     @GetMapping("/workers")
     public String getUsers() {
@@ -100,5 +104,80 @@ public class WorkerControl {
             return "success";
         }
         return "fail";
+    }
+    //获取用户信息
+    @GetMapping("/getuserinfo/{userID}")
+    public WorkerWIthDepartment getUserInfo(@PathVariable String userID){
+        return myWorkerMapper.selectWorkerWithDepartmentByID(Integer.parseInt(userID));
+    }
+    @PostMapping("/modifyname/{userID}")
+    public String modifyName(@PathVariable String userID,@RequestBody Map<String,String> data){
+        String name=data.get("Name");
+        System.out.println("用户ID为:"+userID+"用户修改的用户名为:"+name);
+        //将userID转为相应int类型
+        int iUserID=Integer.parseInt(userID);
+        //设置查询条件
+        QueryWrapper<Workers> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("worker_num",iUserID);
+        Workers worker=workerMapper.selectOne(queryWrapper);
+        worker.setWorkerName(name);
+        workerMapper.update(worker,queryWrapper);
+
+        return "success";
+    }
+    @PostMapping("/modifygender/{userID}")
+    public String modifyGender(@PathVariable String userID,@RequestBody Map<String,String> data){
+        String gender=data.get("gender");
+        System.out.println("用户ID为:"+userID+"用户修改的性别为:"+gender);
+        //将userID转为相应int类型
+        int iUserID=Integer.parseInt(userID);
+        //设置查询条件
+        QueryWrapper<Workers> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("worker_num",iUserID);
+        Workers worker=workerMapper.selectOne(queryWrapper);
+        worker.setGender(gender);
+        workerMapper.update(worker,queryWrapper);
+
+        return "success";
+
+    }
+    @PostMapping("/modifyphone/{userID}")
+    public String modifyPhone(@PathVariable String userID,@RequestBody Map<String,String> data){
+        String phone=data.get("phoneNumber");
+        System.out.println("用户ID为:"+userID+"用户修改的性别为:"+phone);
+        //将userID转为相应int类型
+        int iUserID=Integer.parseInt(userID);
+        //设置查询条件
+        QueryWrapper<Workers> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("worker_num",iUserID);
+        Workers worker=workerMapper.selectOne(queryWrapper);
+        worker.setPhoneNumber(phone);
+        workerMapper.update(worker,queryWrapper);
+
+        return "success";
+
+    }
+    @PostMapping("/modifypassword/{userID}")
+    public String modifyPassword(@PathVariable String userID,@RequestBody Map<String,String> data){
+        String oldPassword=data.get("oldPassword");
+        String newPassword=data.get("newPassword");
+        //根据userID查询密码
+        //将userID转为相应int类型
+        int iUserID=Integer.parseInt(userID);
+        //设置查询条件
+        QueryWrapper<Workers> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("worker_num",iUserID);
+        String check=workerMapper.selectOne(queryWrapper).getPassword();
+        System.out.println("用户的密码为:"+check+"用户输入的密码为:"+oldPassword);
+        if(check.equals(oldPassword)){
+            if(oldPassword.equals(newPassword)){
+                return "same password";
+            }
+            Workers worker=workerMapper.selectOne(queryWrapper);
+            worker.setPassword(newPassword);
+            workerMapper.update(worker,queryWrapper);
+            return "success";
+        }
+        return "wrong password";
     }
 }
