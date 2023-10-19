@@ -1,0 +1,12 @@
+<!-- resources/mapper/YourEntityMapper.xml -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.mapper.EvectionInfosMapper">
+    <select id="selectMonthEvection" resultType="com.app.dataBase.Evection_infos">
+        select * from evection_infos where YEAR(start_time) = #{year} and MONTH(start_time) = #{month}
+                                    and worker_num = #{worker_num};
+    </select>
+
+</mapper>

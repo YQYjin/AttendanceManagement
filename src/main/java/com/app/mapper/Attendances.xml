@@ -1,0 +1,12 @@
+<!-- resources/mapper/YourEntityMapper.xml -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.mapper.AttendancesMapper">
+    <select id="selectMonthAttendance" resultType="com.app.dataBase.Attendances">
+        select * from attendances where YEAR(day_time) = #{year} and MONTH(day_time) = #{month}
+                                    and worker_num = #{worker_num};
+    </select>
+
+</mapper>

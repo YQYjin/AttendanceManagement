@@ -6,12 +6,9 @@ import com.app.dataBase.Workers;
 import com.app.mapper.AdminMapper;
 import com.app.mapper.MyWorkerMapper;
 import com.app.mapper.WorkersMapper;
-import com.app.postData.LoginData;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
