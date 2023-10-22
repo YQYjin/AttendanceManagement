@@ -6,5 +6,5 @@ import com.app.dataBase.Attendances;
 import java.util.List;
 
 public interface AttendancesMapper extends BaseMapper<Attendances> {
-    public List<Attendances> selectMonthAttendance(int workerNum, int year, int month);
+    public List<Attendances> selectMonthAttendance(int worker_num, int year, int month);
 }

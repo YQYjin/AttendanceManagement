@@ -4,9 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.app.mapper.LeaveInfosMapper">
-    <select id="selectEvectionBy" resultType="com.app.dataBase.EvectionInfosWithName">
-        select evection_num, evection_infos.worker_num, reason, start_time, end_time, is_pass, worker_name
-        from evection_infos join workers w on w.worker_num = evection_infos.worker_num;
+    <select id="selectMonthLeaveInfos" resultType="com.app.dataBase.Leave_infos">
+        <!-- 查询某月的请假记录,包括跨月的情况  -->
+        select * from leave_infos where YEAR(start_time) = #{year} and ( MONTH(start_time) = #{month} or MONTH(end_time) = #{month})
+        and worker_num = #{worker_num};
     </select>
 
 
