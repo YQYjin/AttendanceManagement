@@ -7,6 +7,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.util.Calendar;
@@ -29,63 +30,85 @@ public class AttendanceAnalyzer {
         this.evection_infosMapper = evection_infosMapper;
     }
 
-    public void analyze(int workerNum,int year,int month){
+    public MonthAttendance analyze(int workerNum, int year, int month) {
 
-        MonthAttendance monthAttendance=srcAttendanceSummary(workerNum,year,month);
+        MonthAttendance monthAttendance = srcAttendanceSummary(workerNum, year, month);
 
-        monthAttendance=adjustAttendanceSummary(monthAttendance);
+        monthAttendance = adjustAttendanceSummary(monthAttendance);
 
-        monthAttendance.print();
+        //monthAttendance.print();
+        return monthAttendance;
     }
 
     //获取数据库数据，统计原始出勤情况
-    public MonthAttendance srcAttendanceSummary(int workerNum,int year,int month){
-        MonthAttendance monthAttendance=new MonthAttendance();
-        monthAttendance.workerNum=workerNum;
-        monthAttendance.year=year;
-        monthAttendance.month=month;
+    public MonthAttendance srcAttendanceSummary(int workerNum, int year, int month) {
+        MonthAttendance monthAttendance = new MonthAttendance();
+        monthAttendance.workerNum = workerNum;
+        monthAttendance.year = year;
+        monthAttendance.month = month;
+        monthAttendance.workerName=getWorkerName(workerNum);
         //获取当月天数
         YearMonth yearMonth = YearMonth.of(year, month);
         int daysInMonth = yearMonth.lengthOfMonth();
         //初始化数组，从1开始方便计算
-        monthAttendance.attendances=new int[daysInMonth+1];
+        monthAttendance.attendances = new int[daysInMonth + 1];
         //获取所属部门信息，上班时间和下班时间
-        int departmentNum=getDepartmentNum(workerNum);
-        String workTime=getWorkTime(departmentNum);
-        String leaveTime=getLeaveTime(departmentNum);
+        int departmentNum = getDepartmentNum(workerNum);
+        String workTime = getWorkTime(departmentNum);
+        String leaveTime = getLeaveTime(departmentNum);
 
         //查询当月出勤记录
-        List<Attendances> attendancesList=attendancesMapper.selectMonthAttendance(workerNum,year,month);
+        List<Attendances> attendancesList = attendancesMapper.selectMonthAttendance(workerNum, year, month);
         //遍历出勤记录，统计出勤情况
         //不统计缺勤,因为缺勤的记录不在数据库中,并且int数组初始值为0,而 ATTENDANCE_ABSENCE = 0
-        for(Attendances attendance:attendancesList){
+        if (attendancesList != null) {
+            for (Attendances attendance : attendancesList) {
 
-            //获取日期
-            String dayDate=attendance.getDayTime();
-            String[] parts = dayDate.split("-");
-            String dayStr = parts[2]; // 获取日期的天部分
-            int day=Integer.parseInt(dayStr);
-
-
-            String arriveTime=attendance.getArrivalTime();
-            String leaveTime1=attendance.getLeaveTime();
+                //获取日期
+                String dayDate = attendance.getDayTime();
+                String[] parts = dayDate.split("-");
+                String dayStr = parts[2]; // 获取日期的天部分
+                int day = Integer.parseInt(dayStr);
 
 
-            //判断是否正常出勤 到达时间在规定时间之前，离开时间在规定时间之后
-            if(arriveTime.compareTo(workTime)<=0&&leaveTime1.compareTo(leaveTime)>=0){
-                monthAttendance.attendances[day]=MonthAttendance.ATTENDANCE_NORMAL;
-            }
-            //判断是否迟到 到达时间在规定时间之后
-            else if(arriveTime.compareTo(workTime)>0){
-                monthAttendance.attendances[day]=MonthAttendance.ATTENDANCE_LATE;
-            }
-            //判断是否早退 离开时间在规定时间之前
-            else if(leaveTime1.compareTo(leaveTime)<0){
-                monthAttendance.attendances[day]=MonthAttendance.ATTENDANCE_LEAVE_EARLY;
-            }
-            //判断是否迟到并早退
-            else if(arriveTime.compareTo(workTime)>0&&leaveTime1.compareTo(leaveTime)<0){
-                monthAttendance.attendances[day]=MonthAttendance.ATTENDANCE_LATE_AND_LEAVE_EARLY;
+                String arriveTime = attendance.getArrivalTime();
+                String leaveTime1 = attendance.getLeaveTime();
+
+                //计算加班时间
+                if (leaveTime1.compareTo(leaveTime) > 0) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                    try {
+                        Date date1 = sdf.parse(leaveTime);
+                        Date date2 = sdf.parse(leaveTime1);
+                        // 将时间转换为毫秒并计算差值
+                        long time1Millis = date1.getTime();
+                        long time2Millis = date2.getTime();
+                        long timeDifferenceMillis = Math.abs(time2Millis - time1Millis);
+                        // 将差值转换为小时
+                        double timeDifferenceHours = (double) timeDifferenceMillis / (60 * 60 * 1000);
+                        monthAttendance.overtimeHours += timeDifferenceHours;
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                //判断是否正常出勤 到达时间在规定时间之前，离开时间在规定时间之后
+                if (arriveTime.compareTo(workTime) <= 0 && leaveTime1.compareTo(leaveTime) >= 0) {
+                    monthAttendance.attendances[day] = MonthAttendance.ATTENDANCE_NORMAL;
+                }
+                //判断是否迟到 到达时间在规定时间之后
+                else if (arriveTime.compareTo(workTime) > 0) {
+                    monthAttendance.attendances[day] = MonthAttendance.ATTENDANCE_LATE;
+                }
+                //判断是否早退 离开时间在规定时间之前
+                else if (leaveTime1.compareTo(leaveTime) < 0) {
+                    monthAttendance.attendances[day] = MonthAttendance.ATTENDANCE_LEAVE_EARLY;
+                }
+                //判断是否迟到并早退
+                else if (arriveTime.compareTo(workTime) > 0 && leaveTime1.compareTo(leaveTime) < 0) {
+                    monthAttendance.attendances[day] = MonthAttendance.ATTENDANCE_LATE_AND_LEAVE_EARLY;
+                }
+
             }
         }
         System.out.println("原始数据");
@@ -94,90 +117,114 @@ public class AttendanceAnalyzer {
     }
 
     //根据出差和请假记录，修正出勤情况
-    public MonthAttendance adjustAttendanceSummary(MonthAttendance data){
-        int year=data.year;
-        int month=data.month;
-        int workerNum=data.workerNum;
-
+    public MonthAttendance adjustAttendanceSummary(MonthAttendance data) {
+        int year = data.year;
+        int month = data.month;
+        int workerNum = data.workerNum;
 
 
         //查询请假记录
-        List<Leave_infos> leave_infosList=leaveInfosMapper.selectMonthLeaveInfos(workerNum,year,month);
+        List<Leave_infos> leave_infosList = leaveInfosMapper.selectMonthLeaveInfos(workerNum, year, month);
         //遍历请假记录，修正出勤情况
-        for(Leave_infos leave_info:leave_infosList){
-            //跳过未审批通过的记录
-            if(leave_info.getIsPass()==0) {
-                continue;
-            }
-            String strStartDate=leave_info.getStartTime();
-            String strEndDate=leave_info.getEndTime();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date startDate=null;
-            Date endDate=null;
-            try{
-                startDate = sdf.parse(strStartDate);
-                endDate = sdf.parse(strEndDate);
+        if (leave_infosList != null) {
+            for (Leave_infos leave_info : leave_infosList) {
+                //跳过未审批通过的记录
+                if (leave_info.getIsPass() == 0) {
+                    continue;
+                }
+                String strStartDate = leave_info.getStartTime();
+                String strEndDate = leave_info.getEndTime();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date startDate = null;
+                Date endDate = null;
+                try {
+                    startDate = sdf.parse(strStartDate);
+                    endDate = sdf.parse(strEndDate);
 
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            for(int day=1;day<data.attendances.length;++day){
-                Date dayDate=new Date(year-1900,month-1,day);
-                if(dayDate.compareTo(startDate)>=0&&dayDate.compareTo(endDate)<=0){
-                    //判断是事假还是病假
-                    if(leave_info.getType()=="病假")
-                        data.attendances[day]=MonthAttendance.ATTENDANCE_SICK_LEAVE;
-                    else
-                        data.attendances[day]=MonthAttendance.ATTENDANCE_PERSONAL_LEAVE;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                for (int day = 1; day < data.attendances.length; ++day) {
+                    Date dayDate = new Date(year - 1900, month - 1, day);
+                    if (dayDate.compareTo(startDate) >= 0 && dayDate.compareTo(endDate) <= 0) {
+                        //判断是事假还是病假
+                        if (leave_info.getType().equals("病假")) {
+                            data.attendances[day] = MonthAttendance.ATTENDANCE_SICK_LEAVE;
+                            data.sickTimes += 1;
+                        } else {
+                            data.attendances[day] = MonthAttendance.ATTENDANCE_PERSONAL_LEAVE;
+                            data.personalTimes += 1;
+                        }
+                    }
                 }
             }
         }
         //查询出差记录
-        List<Evection_infos> evection_infosList=evection_infosMapper.selectMonthEvectionInfos(workerNum,year,month);
+        List<Evection_infos> evection_infosList = evection_infosMapper.selectMonthEvectionInfos(workerNum, year, month);
         //遍历出差记录，修正出勤情况
-        for(Evection_infos evection_info:evection_infosList){
-            //跳过未审批通过的记录
-            if(evection_info.getIsPass()==0) {
-                continue;
-            }
-            String strStartDate=evection_info.getStartTime();
-            String strEndDate=evection_info.getEndTime();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date startDate=null;
-            Date endDate=null;
-            try{
-                startDate = sdf.parse(strStartDate);
-                endDate = sdf.parse(strEndDate);
+        if(evection_infosList != null) {
+            for (Evection_infos evection_info : evection_infosList) {
+                //跳过未审批通过的记录
+                if (evection_info.getIsPass() == 0) {
+                    continue;
+                }
+                String strStartDate = evection_info.getStartTime();
+                String strEndDate = evection_info.getEndTime();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date startDate = null;
+                Date endDate = null;
+                try {
+                    startDate = sdf.parse(strStartDate);
+                    endDate = sdf.parse(strEndDate);
 
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            for(int day=1;day<data.attendances.length;++day){
-                Date dayDate=new Date(year-1900,month-1,day);
-                if(dayDate.compareTo(startDate)>=0&&dayDate.compareTo(endDate)<=0){
-                    data.attendances[day]=MonthAttendance.ATTENDANCE_EVECTION;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                for (int day = 1; day < data.attendances.length; ++day) {
+                    Date dayDate = new Date(year - 1900, month - 1, day);
+                    if (dayDate.compareTo(startDate) >= 0 && dayDate.compareTo(endDate) <= 0) {
+                        data.attendances[day] = MonthAttendance.ATTENDANCE_EVECTION;
+                        data.evectionTimes += 1;
+                    }
                 }
             }
+        }
+        //遍历,统计缺勤次数:
+        for (int day = 1; day < data.attendances.length; ++day) {
+            if (data.attendances[day] == MonthAttendance.ATTENDANCE_ABSENCE) {
+                data.absenceTimes += 1;
+            }
+        }
+        if(data.absenceTimes==0){
+            data.isFullAttendance="是";
+        }else {
+            data.isFullAttendance="否";
         }
         return data;
     }
 
 
-
-    private int getDepartmentNum(int workerNum){
-        Workers worker=workersMapper.selectById(workerNum);
-        int departmentNum=worker.getDepartmentNum();
+    private int getDepartmentNum(int workerNum) {
+        Workers worker = workersMapper.selectById(workerNum);
+        int departmentNum = worker.getDepartmentNum();
         return departmentNum;
 
     }
-    private String getWorkTime(int departmentNum){
-        Departments department=departmentsMapper.selectById(departmentNum);
-        String workTime=department.getWorkTime();
+    private String getWorkerName(int workerNum) {
+        Workers worker = workersMapper.selectById(workerNum);
+        String workerName = worker.getWorkerName();
+        return workerName;
+
+    }
+    private String getWorkTime(int departmentNum) {
+        Departments department = departmentsMapper.selectById(departmentNum);
+        String workTime = department.getWorkTime();
         return workTime;
     }
-    private String getLeaveTime(int departmentNum){
-        Departments department=departmentsMapper.selectById(departmentNum);
-        String leaveTime=department.getClosingTime();
+
+    private String getLeaveTime(int departmentNum) {
+        Departments department = departmentsMapper.selectById(departmentNum);
+        String leaveTime = department.getClosingTime();
         return leaveTime;
     }
 }

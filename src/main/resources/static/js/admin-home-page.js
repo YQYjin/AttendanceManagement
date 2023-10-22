@@ -49,9 +49,48 @@ function getEvectionData(callback) {
             console.log("Error:" + error);
         }
     });
-
 }
+// 获取考勤信息
+function getAttendanceData(table) {
+    let monthAndYear = {
+        date: $("#date").val()
+    };
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/analyze/all",
+        contentType: "application/json;charset=utf-8",
+        data: JSON.stringify(monthAndYear),
+        success: function (response) {
 
+            attendanceData = response;
+
+            console.log(attendanceData);
+            table.render({
+                elem: '#allAttendanceTable',
+                data: attendanceData,
+                toolbar: '#toolbar',
+                defaultToolbar: ['filter', 'exports'],
+                cols: [[ 
+                    { field: 'workerNum',  title: '员工编号' },
+                    { field: 'workerName', title: '员工姓名' },
+                    { field: 'year',  title: '年份' },
+                    { field: 'month',  title: '月份' },
+                    { field: 'isFullAttendance',  title: '是否全勤' },
+                    { field: 'absenceTimes', title: '缺勤天数' },
+                    { field: 'sickTimes',  title: '病假天数' },
+                    { field: 'personalTimes',  title: '事假天数' },
+                    { field: 'evectionTimes',  title: '出差天数' },
+                    { field: 'overtimeHours',  title: '加班时长'}
+                ]],
+                page: true
+            });
+
+        },
+        error: function (error) {
+            console.log("Error:" + error);
+        }
+    });
+}
 // 渲染请假表格
 function renderLeaveTable(table) {
     // 获取请假信息
@@ -67,15 +106,15 @@ function renderLeaveTable(table) {
             toolbar: '#toolbar',
             defaultToolbar: ['filter', 'exports'],
             cols: [[
-                {field: 'leaveNum', width: 100, title: '请假编号'},
-                {field: 'workerNum', width: 100, title: '员工编号'},
-                {field: 'workerName', width: 100, title: '员工名称'},
-                {field: 'startTime', width: 120, title: '开始时间'},
-                {field: 'endTime', width: 120, title: '结束时间'},
-                {field: 'reason', title: '原因'},
-                {field: 'type', width: 100, title: '类型'},
-                {field: 'isPass', width: 100, title: '状态'},
-                {fixed: 'right', width: 200, align: 'center', toolbar: '#bar', title: '操作'}
+                { field: 'leaveNum', width: 100, title: '请假编号' },
+                { field: 'workerNum', width: 100, title: '员工编号' },
+                { field: 'workerName', width: 100, title: '员工名称' },
+                { field: 'startTime', width: 120, title: '开始时间' },
+                { field: 'endTime', width: 120, title: '结束时间' },
+                { field: 'reason', title: '原因' },
+                { field: 'type', width: 100, title: '类型' },
+                { field: 'isPass', width: 100, title: '状态' },
+                { fixed: 'right', width: 200, align: 'center', toolbar: '#bar', title: '操作' }
             ]],
             page: true
         });
@@ -148,14 +187,14 @@ function renderEvectionTable(table) {
             toolbar: '#toolbar',
             defaultToolbar: ['filter', 'exports'],
             cols: [[
-                {field: 'evectionNum', width: 100, title: '出差编号'},
-                {field: 'workerNum', width: 100, title: '员工编号'},
-                {field: 'workerName', width: 100, title: '员工名称'},
-                {field: 'startTime', width: 120, title: '开始时间'},
-                {field: 'endTime', width: 120, title: '结束时间'},
-                {field: 'reason', title: '原因'},
-                {field: 'isPass', width: 100, title: '状态'},
-                {fixed: 'right', width: 200, align: 'center', toolbar: '#bar', title: '操作'}
+                { field: 'evectionNum', width: 100, title: '出差编号' },
+                { field: 'workerNum', width: 100, title: '员工编号' },
+                { field: 'workerName', width: 100, title: '员工名称' },
+                { field: 'startTime', width: 120, title: '开始时间' },
+                { field: 'endTime', width: 120, title: '结束时间' },
+                { field: 'reason', title: '原因' },
+                { field: 'isPass', width: 100, title: '状态' },
+                { fixed: 'right', width: 200, align: 'center', toolbar: '#bar', title: '操作' }
             ]],
             page: true
         });

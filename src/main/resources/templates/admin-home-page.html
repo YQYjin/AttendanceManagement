@@ -49,6 +49,7 @@
             text-align: center;
             /* 居中按钮组 */
         }
+
         /* 自定义样式 */
         .custom-header {
             font-size: 24px;
@@ -58,6 +59,11 @@
         .custom-welcome {
             font-size: 20px;
             /* 欢迎消息字体大小 */
+        }
+
+        .left-aligned-input {
+            margin-left: 0;
+            /* 设置左边距为0，让文本框紧靠左边界 */
         }
     </style>
 </head>
@@ -92,10 +98,11 @@
                         <br>
                     </p>
                     <div class="layui-card-header custom-header layui-edge-right">审批结果</div>
-                    <div class="layui-card-body">
+                    <div class="layui-container">
                         <div class="layui-header custom-header">请假审批结果</div>
                         <!-- 这里设置display: none 是避免多余的表头显示 -->
-                        <table class="layui-table" lay-filter="leaveInfoTable" id="leaveInfoTable" style="display: none;">
+                        <table class="layui-table" lay-filter="leaveInfoTable" id="leaveInfoTable"
+                            style="display: none;">
                             <thead>
                                 <tr>
                                     <th lay-data="{field:'leaveNum', width:100}">请假编号</th>
@@ -115,36 +122,84 @@
                     <div class="layui-container">
                         <div class="layui-header custom-header">出差审批结果</div>
                         <!-- 这里设置display: none 是避免多余的表头显示 -->
-                        <table class="layui-table" lay-filter="evectionInfoTable" id="evectionInfoTable" style="display: none;">
-            <thead>
-                <tr>
-                    <th lay-data="{field:'evectionNum', width:100}">出差编号</th>
-                    <th lay-data="{field:'workerNum', width:100}">员工编号</th>
-                    <th lay-data="{field:'employeeName', width:100}">员工名称</th>
-                    <th lay-data="{field:'startTime', width:150}">开始时间</th>
-                    <th lay-data="{field:'endTime', width:150}">结束时间</th>
-                    <th lay-data="{field:'reason'}">原因</th>
-                    <th lay-data="{field:'isPass', width:100}">状态</th>
-                    <th lay-data="{fixed:'right', width:150, align:'center', toolbar:'#bar'}">操作</th>
-                </tr>
-            </thead>
-        </table>
+                        <table class="layui-table" lay-filter="evectionInfoTable" id="evectionInfoTable"
+                            style="display: none;">
+                            <thead>
+                                <tr>
+                                    <th lay-data="{field:'evectionNum', width:100}">出差编号</th>
+                                    <th lay-data="{field:'workerNum', width:100}">员工编号</th>
+                                    <th lay-data="{field:'employeeName', width:100}">员工名称</th>
+                                    <th lay-data="{field:'startTime', width:150}">开始时间</th>
+                                    <th lay-data="{field:'endTime', width:150}">结束时间</th>
+                                    <th lay-data="{field:'reason'}">原因</th>
+                                    <th lay-data="{field:'isPass', width:100}">状态</th>
+                                    <th lay-data="{fixed:'right', width:150, align:'center', toolbar:'#bar'}">操作</th>
+                                </tr>
+                            </thead>
+                        </table>
                         <button class="layui-btn " id="refreshEvection">刷新</button>
                     </div>
-                    
+                </div>
+            </div>
+        </div>
+        <div class="layui-row">
+            <!-- 左侧部分 -->
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <p>
+                        <br>
+                        <br>
+                        <br>
+                    </p>
+                    <div class="layui-card-header custom-header layui-edge-right">月度考勤统计</div>
+                    <div class="layui-card-body">
+
+                        <div class="layui-form">
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="date" id="date" class="layui-input"
+                                            placeholder="请输入年月">
+                                    </div>
+                                    <button class="layui-btn" id="btnQueryAll">统计考勤结果</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-container">
+                            <!-- 这里设置display: none 是避免多余的表头显示 -->
+                            <table class="layui-table" lay-filter="allAttendanceTable" id="allAttendanceTable"
+                                style="display: none;">
+                                <thead>
+                                    <tr>
+                                        <th lay-data="{field:'workerNum', width:100}">员工编号</th>
+                                        <th lay-data="{field:'workerName', width:100}">员工姓名</th>
+                                        <th lay-data="{field:'year', width:100}">年份</th>
+                                        <th lay-data="{field:'month', width:100}">月份</th>
+                                        <th lay-data="{field:'isFullAttendance', width:100}">是否全勤</th>
+                                        <th lay-data="{field:'absenceTimes', width:100}">缺勤天数</th>
+                                        <th lay-data="{field:'sickTimes', width:100}">病假天数</th>
+                                        <th lay-data="{field:'personalTimes', width:100}">事假天数</th>
+                                        <th lay-data="{field:'evectionTimes', width:100}">出差天数</th>
+                                        <th lay-data="{field:'overtimeHours', width:100}">加班时长(小时)</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    
+
 
     <!-- <a href="register.html" class="btn btn-primary">新员工注册</a>
 
     <div class="layui-container">
         <h1 class="layui-header">请假信息列表</h1> -->
-        <!-- 这里设置display: none 是避免多余的表头显示 -->
-        <!-- <table class="layui-table" lay-filter="leaveInfoTable" id="leaveInfoTable" style="display: none;">
+    <!-- 这里设置display: none 是避免多余的表头显示 -->
+    <!-- <table class="layui-table" lay-filter="leaveInfoTable" id="leaveInfoTable" style="display: none;">
             <thead>
                 <tr>
                     <th lay-data="{field:'leaveNum', width:100}">请假编号</th>
@@ -163,8 +218,8 @@
 
     <div class="layui-container">
         <h1 class="layui-header">出差信息列表</h1> -->
-        <!-- 这里设置display: none 是避免多余的表头显示 -->
-        <!-- <table class="layui-table" lay-filter="evectionInfoTable" id="evectionInfoTable" style="display: none;">
+    <!-- 这里设置display: none 是避免多余的表头显示 -->
+    <!-- <table class="layui-table" lay-filter="evectionInfoTable" id="evectionInfoTable" style="display: none;">
             <thead>
                 <tr>
                     <th lay-data="{field:'evectionNum', width:100}">出差编号</th>
@@ -179,7 +234,7 @@
             </thead>
         </table>
     </div> -->
-    
+
     <!-- 引入jQuery和Bootstrap的JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -199,13 +254,24 @@
 
 
     <script>
-        layui.use(['table', 'form'], function () {
+        layui.use(['table', 'form', 'laydate'], function () {
+
             var table = layui.table;
+            var laydate = layui.laydate;
+            laydate.render({
+                elem: '#date', // 指定输入框的 ID
+                type: 'month', // 设置日期选择类型为年月
+                format: 'yyyy-MM' // 设置日期格式为YYYY-MM
+            });
+
             // 调用函数渲染表格
             // 页面加载完成时渲染表格
             $(document).ready(function () {
                 renderLeaveTable(table);
                 renderEvectionTable(table);
+            });
+            $("#btnQueryAll").click(function () {
+                getAttendanceData(table);
             });
         });
     </script>

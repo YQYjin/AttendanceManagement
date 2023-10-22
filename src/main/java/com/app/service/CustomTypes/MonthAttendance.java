@@ -16,9 +16,17 @@ public class MonthAttendance {
     public static final int ATTENDANCE_EVECTION = 7;
 
     public int workerNum;
+    public String workerName;
     public int month;
     public int year;
     public int[] attendances;
+    public int sickTimes;
+    public int personalTimes;
+    public int evectionTimes;
+    public int absenceTimes;
+
+    public double overtimeHours;
+    public String isFullAttendance;
 
      public void print(){
          System.out.println("编号:"+workerNum);
@@ -47,6 +55,7 @@ public class MonthAttendance {
                  System.out.println();
             }
          }
+         System.out.println("病假次数:"+sickTimes+"事假次数:"+personalTimes+"出差次数:"+evectionTimes+"缺勤次数:"+absenceTimes+"加班时长:"+overtimeHours);
 
     }
 }
