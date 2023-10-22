@@ -105,6 +105,10 @@ public class AttendanceAnalyzer {
         List<Leave_infos> leave_infosList=leaveInfosMapper.selectMonthLeaveInfos(workerNum,year,month);
         //遍历请假记录，修正出勤情况
         for(Leave_infos leave_info:leave_infosList){
+            //跳过未审批通过的记录
+            if(leave_info.getIsPass()==0) {
+                continue;
+            }
             String strStartDate=leave_info.getStartTime();
             String strEndDate=leave_info.getEndTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -132,6 +136,10 @@ public class AttendanceAnalyzer {
         List<Evection_infos> evection_infosList=evection_infosMapper.selectMonthEvectionInfos(workerNum,year,month);
         //遍历出差记录，修正出勤情况
         for(Evection_infos evection_info:evection_infosList){
+            //跳过未审批通过的记录
+            if(evection_info.getIsPass()==0) {
+                continue;
+            }
             String strStartDate=evection_info.getStartTime();
             String strEndDate=evection_info.getEndTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

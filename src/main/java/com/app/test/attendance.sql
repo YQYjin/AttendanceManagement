@@ -33,3 +33,14 @@ VALUES
     (1, '2023-10-31', '08:30:00', '18:00:00'); -- 正常出勤
 select * from attendances where YEAR(day_time) = 2023 and MONTH(day_time) = 10
                             and worker_num = 1;
+
+Insert into leave_infos(worker_num, type, reason, start_time, end_time,is_pass)
+values
+    (1, '事假', '家里有事' ,'2023-10-14', '2023-10-15',true),
+    (1, '病假', '感冒发烧' ,'2023-10-19', '2023-10-20',true);
+Insert into evection_infos(worker_num, reason, start_time, end_time, is_pass)
+values
+    (1, '出差', '2023-10-24', '2023-10-26',true);
+Insert into evection_infos(worker_num, reason, start_time, end_time, is_pass)
+values
+    (1, '出差', '2023-10-28', '2023-11-3',true);
