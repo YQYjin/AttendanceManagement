@@ -62,11 +62,52 @@ function getAttendanceData(table) {
         data: JSON.stringify(monthAndYear),
         success: function (response) {
 
-            attendanceData = response;
+            let attendanceData = response;
 
             console.log(attendanceData);
             table.render({
                 elem: '#allAttendanceTable',
+                data: attendanceData,
+                toolbar: '#toolbar',
+                defaultToolbar: ['filter', 'exports'],
+                cols: [[ 
+                    { field: 'workerNum',  title: '员工编号' },
+                    { field: 'workerName', title: '员工姓名' },
+                    { field: 'year',  title: '年份' },
+                    { field: 'month',  title: '月份' },
+                    { field: 'isFullAttendance',  title: '是否全勤' },
+                    { field: 'absenceTimes', title: '缺勤天数' },
+                    { field: 'sickTimes',  title: '病假天数' },
+                    { field: 'personalTimes',  title: '事假天数' },
+                    { field: 'evectionTimes',  title: '出差天数' },
+                    { field: 'overtimeHours',  title: '加班时长'}
+                ]],
+                page: true
+            });
+
+        },
+        error: function (error) {
+            console.log("Error:" + error);
+        }
+    });
+}
+function getOneAttendanceData(table) {
+    let monthAndYear = {
+        date: $("#date").val(),
+        workerName: $("#workerName").val()
+    };
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/analyze/one",
+        contentType: "application/json;charset=utf-8",
+        data: JSON.stringify(monthAndYear),
+        success: function (response) {
+
+            let attendanceData = response;
+
+            console.log(attendanceData);
+            table.render({
+                elem: '#oneAttendanceTable',
                 data: attendanceData,
                 toolbar: '#toolbar',
                 defaultToolbar: ['filter', 'exports'],

@@ -79,7 +79,7 @@
             </div>
             <div class="button-group">
                 <button type="submit" class="layui-btn" >注册</button>
-                <a href="login.html" class="layui-btn" >登录</a>
+                <button class="layui-btn" id="btnBack">返回</button>
             </div>
         </form>
     </div>
@@ -140,6 +140,9 @@
                         console.log("error:" + response);
                     }
                 })
+            })
+            $("#btnBack").click(function () {
+                window.history.back();
             })
         })
     </script>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>注册部门</title>
+    <!-- 引入layui的CSS文件 -->
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/layui/2.5.7/css/layui.css">
+    <style>
+        /* 自定义样式 */
+        .custom-header {
+            font-size: 24px;
+            /* 调整标题字体大小 */
+        }
+
+        .custom-top-header {
+            font-size: 24px;
+            /* 调整标题字体大小 */
+        }
+
+        .custom-welcome {
+            font-size: 20px;
+            background-color: aqua;
+            /* 欢迎消息字体大小 */
+        }
+
+        .right-top-buttons {
+            position: absolute;
+            top: 10px;
+            /* 距离顶部的距离 */
+            left: 10px;
+            /* 距离右边的距离 */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layui-container">
+        <div class="layui-header custom-top-header">
+            <!-- <div class="header-text custom-header">左侧文字</div> -->
+            <div class="right-top-buttons">
+                <button class="layui-btn layui-btn" id="btnBack">返回</button>
+
+            </div>
+        </div>
+        <div class="layui-row">
+            <!-- 左侧部分 -->
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    
+                    <p>
+                        <br>
+                        <br>
+                    </p>
+                    <div class="layui-card-header custom-header layui-edge-right">部门注册</div>
+                    <div class="layui-card-body">
+                        <form class="layui-form">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">名称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="departmentName" id="departmentName" lay-verify="required"
+                                        placeholder="请输入部门名称" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">上班时间</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="start_time" id="start_time" lay-verify="required"
+                                        placeholder="请选择上班时间" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">下班时间</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="end_time" id="end_time" lay-verify="required"
+                                        placeholder="请选择上班时间" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="formSubmit"
+                                        id="registerBtn">注册</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-row">
+            <!-- 左侧部分 -->
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <p>
+                        <br>
+                        <br>
+                        <br>
+                    </p>
+                    <div class="layui-card-header custom-header layui-edge-right">部门查询和修改</div>
+                    <div class="layui-card-header custom-header">根据名称查询部门</div>
+                    <div class="layui-card-body">
+                        <form class="layui-form">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">名称</label>
+                                <p>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="departmentName" id="queryName" lay-verify="required"
+                                        placeholder="请输入部门名称" class="layui-input">
+                                </div>
+                                <button class="layui-btn" id="queryBtn" lay-submit lay-filter="formSubmit">查询</button>
+                                </p>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">ID</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="departmentName" id="queryID" 
+                                        placeholder="待查询" class="layui-input" disabled>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">上班时间</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="start_time" id="start_time2" 
+                                        placeholder="待查询" class="layui-input" disabled>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">下班时间</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="end_time" id="end_time2" 
+                                        placeholder="待查询" class="layui-input" disabled>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <p>
+                        <br>
+                        <br>
+                        <br>
+                    </p>
+                    <div class="layui-card-header custom-header "></div>
+                    <div class="layui-card-header custom-header">修改部门信息</div>
+                    <div class="layui-card-body">
+                        <form class="layui-form">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">名称</label>
+                                <p>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="newName" id="newName" lay-verify="required"
+                                        placeholder="请输入新名称" class="layui-input">
+                                </div>
+                                <button class="layui-btn" lay-submit lay-filter="formSubmit" id="nameModifyBtn">修改</button>
+                                </p>
+                            </div>
+                        </form>
+                        <form class="layui-form">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">上班时间</label>
+                                <p>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="start_time" id="newStartTime" lay-verify="required"
+                                        placeholder="请输入新的上班时间" class="layui-input">
+                                </div>
+                                <button class="layui-btn" lay-submit lay-filter="formSubmit" id="startModifyBtn">修改</button>
+                                </p>
+                            </div>
+                        </form>
+                        <form class="layui-form">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">下班时间</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="end_time" id="newEndTime" lay-verify="required"
+                                        placeholder="请输入新的下班时间" class="layui-input">
+                                </div>
+                                <button class="layui-btn" lay-submit lay-filter="formSubmit" id="endModifyBtn">修改</button>
+                            </div>
+                        </form>
+                        <div class="layui-form" style="padding: 8px;">
+                            <button class="layui-btn layui-btn-danger layui-col-md-offset3" id="deletBtn"
+                                onclick="confirmAction()"> 删除该部门
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- 引入layui的JS文件 -->
+    <script src="/layui/layui.js"></script>
+    <script src="/static/layui/layui.js"></script>
+    <script src="../static/layui/layui.js"></script>
+
+    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/layui/2.5.7/layui.js"></script>
+
+    <!-- 引入jQuery和Bootstrap的JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>
+        layui.use(['form', 'laydate','layer'], function () {
+            // 渲染审批表格
+
+            var form = layui.form;
+            var laydate = layui.laydate;
+            var layer = layui.layer;
+
+            // 渲染日期选择组件
+            layui.laydate.render({
+                elem: '#start_time',
+                type: 'time',
+                format: 'HH:mm:ss'
+            });
+
+            layui.laydate.render({
+                elem: '#end_time',
+                type: 'time',
+                format: 'HH:mm:ss'
+            });
+            layui.laydate.render({
+                elem: '#newStartTime',
+                type: 'time',
+                format: 'HH:mm:ss'
+            });
+            layui.laydate.render({
+                elem: '#newEndTime',
+                type: 'time',
+                format: 'HH:mm:ss'
+            });
+
+        });
+        function confirmAction() {
+                layer.confirm('您确定要删除该部门吗？', {
+                    btn: ['确定', '取消'],
+                    title: '确认操作'
+                }, function () {
+                    // 用户点击确定执行的操作
+                    
+                    layer.closeAll(); // 关闭确认窗口
+                    deleteDepartment();
+                }, function () {
+                    // 用户点击取消执行的操作
+                    
+                    layer.closeAll(); // 关闭确认窗口
+                });
+            }
+        
+        //ajax监听表单提交
+        $(document).ready(function () {
+
+            $("#registerBtn").click(function (event) {
+
+                event.preventDefault();
+                //获取表单数据
+                let departmentName = $("#departmentName").val();
+                let start_time = $("#start_time").val();
+                let end_time = $("#end_time").val();
+
+                let formData = {
+                    departmentName: departmentName,
+                    start_time: start_time,
+                    end_time: end_time
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/department/register",  // 替换为实际的后台处理URL
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(formData), //将表单转换为JSON格式
+                    success: function (response) {
+                        console.log("Success" + response);
+                        if (response == 'success') {
+                            window.alert("注册成功");
+
+                        } else {
+                            window.alert("注册失败" + response);
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:" + error);
+                    }
+                });
+            });
+
+            $("#queryBtn").click(function (event) {
+                event.preventDefault();
+                //回调函数
+                getQueryData(function (response) {
+                    $("#queryID").val(response.departmentNum);
+                    $("#start_time2").val(response.workTime);
+                    $("#end_time2").val(response.closingTime);
+                })
+            });
+            
+            
+            $("#nameModifyBtn").click(function (event) {
+                event.preventDefault();
+                //获取表单数据
+                let id = $("#queryID").val();
+                let newData= $("#newName").val();
+
+                if (id == null || id == "") {
+                    window.alert("请先查询部门信息");
+                    return;
+                }
+
+                let formData = {
+                    departmentNum: id,
+                    newData: newData,
+                    type: "name"
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/department/modify",  // 替换为实际的后台处理URL
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(formData), //将表单转换为JSON格式
+                    success: function (response) {
+                        console.log("Success" + response);
+                        if (response == 'success') {
+                            window.alert("修改成功");
+                            $("#queryName").val(newData);
+                            refreshQuery();
+                        } else {
+                            window.alert("修改失败" + response);
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:" + error);
+                    }
+                });
+            });
+
+            $("#startModifyBtn").click(function (event) {
+                event.preventDefault();
+                //获取表单数据
+                let id = $("#queryID").val();
+                let newData= $("#newStartTime").val();
+
+                if (id == null || id == "") {
+                    window.alert("请先查询部门信息");
+                    return;
+                }
+
+                let formData = {
+                    departmentNum: id,
+                    newData: newData,
+                    type: "startTime"
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/department/modify",  // 替换为实际的后台处理URL
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(formData), //将表单转换为JSON格式
+                    success: function (response) {
+                        console.log("Success" + response);
+                        
+                        if (response == 'success') {
+                            window.alert("修改成功");
+                            refreshQuery();
+                        } else {
+                            window.alert("修改失败" + response);
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:" + error);
+                    }
+                });
+            });
+
+            $("#endModifyBtn").click(function (event) {
+                event.preventDefault();
+                //获取表单数据
+                let id = $("#queryID").val();
+                let newData= $("#newEndTime").val();
+
+                if (id == null || id == "") {
+                    window.alert("请先查询部门信息");
+                    return;
+                }
+
+                let formData = {
+                    departmentNum: id,
+                    newData: newData,
+                    type: "endTime"
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/department/modify",  // 替换为实际的后台处理URL
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(formData), //将表单转换为JSON格式
+                    success: function (response) {
+                        console.log("Success" + response);
+                        if (response == 'success') {
+                            window.alert("修改成功");
+                            refreshQuery();
+                        } else {
+                            window.alert("修改失败" + response);
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:" + error);
+                    }
+                });
+            });
+
+            
+
+
+            $("#btnBack").click(function () {
+                window.history.back();
+            });
+        });
+
+        function getQueryData(callback) {
+            let queryData;
+            //获取表单数据
+            let departmentName = $("#queryName").val();
+
+            let formData = {
+                departmentName: departmentName
+            };
+            console.log(formData);
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/department/query",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(formData),
+                success: function (response) {
+                    if(response == null){
+                            window.alert("未查询到该部门");
+                            return;
+                        }
+                    callback(response);
+                },
+                error: function (error) {
+                    console.log("Error:" + error);
+                }
+            });
+
+        }
+        function deleteDepartment() {
+                event.preventDefault();
+
+                let id = $("#queryID").val();
+                if (id == null || id == "") {
+                    window.alert("请先查询部门信息");
+                    return;
+                }
+
+                let formData = {
+                    departmentNum: id,
+                    type: "delete"
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/department/modify",  // 替换为实际的后台处理URL
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(formData), //将表单转换为JSON格式
+                    success: function (response) {
+                        console.log("Success" + response);
+                        if (response == 'success') {
+                            window.alert("已删除该部门");
+                        } else {
+                            window.alert("删除失败" + response);
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:" + error);
+                    }
+                });
+            }
+        function refreshQuery(){
+            let queryData;
+            
+            let departmentName = $("#queryName").val();
+
+            let formData = {
+                departmentName: departmentName
+            };
+            console.log(formData);
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/department/query",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(formData),
+                success: function (response) {
+                    if(response == null||response == ""){
+                            window.alert("未查询到该部门");
+                            return;
+                        }
+                    $("#queryID").val(response.departmentNum);
+                    $("#start_time2").val(response.workTime);
+                    $("#end_time2").val(response.closingTime);
+                    
+                },
+                error: function (error) {
+                    console.log("Error:" + error);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

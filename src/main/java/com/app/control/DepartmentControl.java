@@ -59,25 +59,54 @@ public class DepartmentControl {
     @PostMapping("/department/modify")
     public String modify(@RequestBody Map<String,String> data){
         String id=data.get("departmentNum");
-        String startTime=data.get("start_time");
-        String endTime=data.get("end_time");
+        String type=data.get("type");
+        if(type.equals("name")){
+            try{
+                String name=data.get("newData");
+                System.out.println("修改部门ID:"+id+"部门名称:"+name);
+                //根据id修改数据
+                Departments department=departmentsMapper.selectById(id);
+                department.setDepartmentName(name);
+                departmentsMapper.updateById(department);
+                return "success";
+            }catch (Exception e) {
+                return "error";
+            }
+        }else if(type.equals("startTime")){
+            try{
+                String newData=data.get("newData");
+                System.out.println("修改部门ID:"+id+"上班时间:"+newData);
+                //根据id修改数据
+                Departments department=departmentsMapper.selectById(id);
+                department.setWorkTime(newData);
+                departmentsMapper.updateById(department);
+                return "success";
+            }catch (Exception e) {
+                return "error";
+            }
+        }else if(type.equals("endTime")){
+            try{
+                String newData=data.get("newData");
+                System.out.println("修改部门ID:"+id+"下班时间:"+newData);
+                //根据id修改数据
+                Departments department=departmentsMapper.selectById(id);
+                department.setClosingTime(newData);
+                departmentsMapper.updateById(department);
+                return "success";
+            }catch (Exception e) {
+                return "error";
+            }
+        }else if(type.equals("delete")){
+            try{
 
-        System.out.println("修改部门ID:"+id+"开始时间:"+startTime+"结束时间:"+endTime);
-
-        QueryWrapper<Departments> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("department_num",id);
-        Departments res=departmentsMapper.selectOne(queryWrapper);
-        if(res==null) {
-            return "该部门不存在";
+                System.out.println("删除部门ID:"+id);
+                //根据id删除数据
+                departmentsMapper.deleteById(Integer.parseInt(id));
+                return "success";
+            }catch (Exception e) {
+                return "error";
+            }
         }
-        //根据id修改数据
-        Departments department=new Departments();
-        department.setDepartmentNum(Integer.parseInt(id));
-        department.setWorkTime(startTime);
-        department.setClosingTime(endTime);
-        departmentsMapper.updateById(department);
-
-        return "success";
+        return "error";
     }
-
 }

@@ -1,9 +1,11 @@
 package com.app.control;
 
 import com.app.dataBase.Admins;
+import com.app.dataBase.Departments;
 import com.app.dataBase.WorkerWIthDepartment;
 import com.app.dataBase.Workers;
 import com.app.mapper.AdminMapper;
+import com.app.mapper.DepartmentsMapper;
 import com.app.mapper.MyWorkerMapper;
 import com.app.mapper.WorkersMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -23,6 +25,8 @@ public class WorkerControl {
     private AdminMapper adminMapper;
     @Autowired
     private MyWorkerMapper myWorkerMapper;
+    @Autowired
+    private DepartmentsMapper departmentsMapper;
 
     @GetMapping("/workers")
     public String getUsers() {
@@ -35,18 +39,25 @@ public class WorkerControl {
     //用户登录的后端检查
     @PostMapping("/login")
     public String checkLogin(@RequestBody Map<String,String> data) {
-        String userID=data.get("userID");
+        String workerName=data.get("userID");
         String password=data.get("password");
-        System.out.println("用户ID为:"+userID+"用户密码为:"+password);
-        //将userID转为相应int类型
-        int iUserID=Integer.parseInt(userID);
-        //设置查询条件
+        System.out.println("用户名为:"+workerName+"用户密码为:"+password);
+        //根据用户名查询用户id
         QueryWrapper<Workers> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("worker_num",iUserID);
-        String check=workerMapper.selectOne(queryWrapper).getPassword();
+        queryWrapper.eq("worker_name",workerName);
+        Workers res=workerMapper.selectOne(queryWrapper);
+        if(res==null) {
+            return "fail";
+        }
+        int userID=res.getWorkerNum();
+
+        //设置查询条件
+        QueryWrapper<Workers> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.eq("worker_num",userID);
+        String check=workerMapper.selectOne(queryWrapper2).getPassword();
         System.out.println("用户的密码为:"+check+"用户输入的密码为:"+password);
         if(check.equals(password)){
-            return "success";
+            return String.valueOf(userID);
         }
         return "fail";
     }
@@ -59,10 +70,15 @@ public class WorkerControl {
         String gender=data.get("gender");
         String phone=data.get("phone");
         int salary=Integer.parseInt(data.get("salary"));
-        int department=Integer.parseInt(data.get("department"));
-        String password=data.get("password");
+        String departmentName=data.get("department");
+        //根据部门名称查询ID
+        QueryWrapper<Departments> depQueryWrapper = new QueryWrapper<>();
+        depQueryWrapper.eq("department_name",departmentName);
+        int department=departmentsMapper.selectOne(depQueryWrapper).getDepartmentNum();
+
+
         //输出用户所有信息
-        System.out.println("用户名为:"+userName+"gender"+gender+"phone"+phone+"salary"+salary+"department"+department+"password"+password);
+        System.out.println("用户名为:"+userName+"gender"+gender+"phone"+phone+"salary"+salary+"department"+department);
 
         // 创建 QueryWrapper 对象 用于条件查询
         QueryWrapper<Workers> queryWrapper = new QueryWrapper<>();
@@ -78,7 +94,6 @@ public class WorkerControl {
         worker.setWorkerName(userName);
         worker.setGender(gender);
         worker.setSalary(salary);
-        worker.setPassword(password);
         worker.setPhoneNumber(phone);
         worker.setDepartmentNum(department);
         workerMapper.insert(worker);
@@ -87,18 +102,25 @@ public class WorkerControl {
     //管理员登录
     @PostMapping("/adminlogin")
     public String adminLogin(@RequestBody Map<String,String> data){
-        String userID=data.get("userID");
+        String adminName=data.get("userID");
         String password=data.get("password");
-        System.out.println("管理员ID为:"+userID+"用户密码为:"+password);
-        //将userID转为相应int类型
-        int iUserID=Integer.parseInt(userID);
-        //设置查询条件
+        System.out.println("管理员用户为:"+adminName+"用户密码为:"+password);
+        //根据用户名查询用户id
         QueryWrapper<Admins> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("admin_num",iUserID);
-        String check=adminMapper.selectOne(queryWrapper).getAdminPassword();
+        queryWrapper.eq("admin_name",adminName);
+        Admins res=adminMapper.selectOne(queryWrapper);
+        if(res==null) {
+            return "fail";
+        }
+        int adminID=res.getAdminNum();
+        //设置查询条件
+        QueryWrapper<Admins> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.eq("admin_num",adminID);
+        String check=adminMapper.selectOne(queryWrapper2).getAdminPassword();
         System.out.println("管理员的密码为:"+check+"用户输入的密码为:"+password);
         if(check.equals(password)){
-            return "success";
+            //返回管理员的ID
+            return String.valueOf(adminID);
         }
         return "fail";
     }
@@ -107,6 +129,22 @@ public class WorkerControl {
     public WorkerWIthDepartment getUserInfo(@PathVariable String userID){
         return myWorkerMapper.selectWorkerWithDepartmentByID(Integer.parseInt(userID));
     }
+    @PostMapping("/worker/query")
+    public WorkerWIthDepartment queryWorker(@RequestBody Map<String,String> data){
+        String workerName=data.get("workerName");
+        System.out.println("用户查询的用户名为:"+workerName);
+        //设置查询条件
+        QueryWrapper<Workers> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("worker_name",workerName);
+
+        Workers worker=workerMapper.selectOne(queryWrapper);
+        if(worker==null) {
+            return null;
+        }
+        WorkerWIthDepartment res=myWorkerMapper.selectWorkerWithDepartmentByID(worker.getWorkerNum());
+        return res;
+    }
+
     @PostMapping("/modifyname/{userID}")
     public String modifyName(@PathVariable String userID,@RequestBody Map<String,String> data){
         String name=data.get("Name");
@@ -176,5 +214,96 @@ public class WorkerControl {
             return "success";
         }
         return "wrong password";
+    }
+    @PostMapping("/worker/modify")
+    public String modify(@RequestBody Map<String,String> data){
+        String id=data.get("workerID");
+        String type=data.get("type");
+        if(type.equals("name")){
+            try{
+                String newData=data.get("newData");
+                System.out.println("修改员工ID:"+id+"姓名:"+newData);
+                //根据id修改数据
+                Workers worker=workerMapper.selectById(id);
+                worker.setWorkerName(newData);
+                workerMapper.updateById(worker);
+
+                return "success";
+            }catch (Exception e) {
+                e.printStackTrace();
+
+                return "error";
+            }
+        }else if(type.equals("gender")){
+            try{
+                String newData=data.get("newData");
+                System.out.println("修改员工ID:"+id+"性别:"+newData);
+                //根据id修改数据
+                Workers worker=workerMapper.selectById(id);
+                worker.setGender(newData);
+                workerMapper.updateById(worker);
+                return "success";
+            }catch (Exception e) {
+                e.printStackTrace();
+                return "error";
+            }
+        }else if(type.equals("phone")){
+            try{
+                String newData=data.get("newData");
+                System.out.println("修改员工ID:"+id+"电话:"+newData);
+                //根据id修改数据
+                Workers worker=workerMapper.selectById(id);
+                worker.setPhoneNumber(newData);
+                workerMapper.updateById(worker);
+
+                return "success";
+            }catch (Exception e) {
+                e.printStackTrace();
+                return "error";
+            }
+        }else if(type.equals("salary")){
+            try{
+                String newData=data.get("newData");
+                System.out.println("修改员工ID:"+id+"薪水:"+newData);
+                //根据id修改数据
+                Workers worker=workerMapper.selectById(id);
+                worker.setSalary(Integer.parseInt(newData));
+                workerMapper.updateById(worker);
+
+
+                return "success";
+            }catch (Exception e) {
+                e.printStackTrace();
+                return "error";
+            }
+        }else if(type.equals("department")){
+            try{
+                String newData=data.get("newData");
+                System.out.println("修改员工ID:"+id+"部门:"+newData);
+                //根据部门名称查询部门ID
+                QueryWrapper<Departments> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("department_name",newData);
+                int departmentID=departmentsMapper.selectOne(queryWrapper).getDepartmentNum();
+                //根据id修改数据
+                Workers worker=workerMapper.selectById(id);
+                worker.setDepartmentNum(departmentID);
+                workerMapper.updateById(worker);
+                return "success";
+            }catch (Exception e) {
+                e.printStackTrace();
+                return "error";
+            }
+        } else if(type.equals("delete")){
+            try{
+                System.out.println("删除员工ID:"+id);
+                //根据id删除数据
+                workerMapper.deleteById(Integer.parseInt(id));
+                return "success";
+            }catch (Exception e) {
+                e.printStackTrace();
+                return "error";
+            }
+        }
+        return "error";
     }
 }

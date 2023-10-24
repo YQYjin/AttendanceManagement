@@ -5,7 +5,7 @@
 
 <mapper namespace="com.app.mapper.MyWorkerMapper">
     <select id="selectWorkerWithDepartmentByID" resultType="com.app.dataBase.WorkerWIthDepartment">
-        select  worker_name, gender,phone_number,salary ,department_name
+        select  worker_name, worker_num, gender,phone_number,salary ,department_name
         from workers join departments d on d.department_num = workers.department_num where worker_num=#{worker_num};
     </select>
 

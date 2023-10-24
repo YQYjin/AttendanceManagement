@@ -5,6 +5,7 @@ import com.app.dataBase.Workers;
 import com.app.mapper.*;
 import com.app.service.AttendanceAnalyzer;
 import com.app.service.CustomTypes.MonthAttendance;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,6 +63,9 @@ public class AnalyzerControl {
 
         List<Workers> allWorkers=workersMapper.selectList(null);
         List<MonthAttendance> result=new ArrayList<MonthAttendance>();
+        if(allWorkers.size()==0){
+            return result;
+        }
         for(Workers worker:allWorkers){
             MonthAttendance monthAttendance=attendanceAnalyzer.analyze(worker.getWorkerNum(),year,month);
             result.add(monthAttendance);
@@ -73,16 +77,29 @@ public class AnalyzerControl {
     @PostMapping("/analyze/one")
     public List<MonthAttendance> analyzeOne(@RequestBody Map<String, String> request){
         AttendanceAnalyzer attendanceAnalyzer=new AttendanceAnalyzer(workersMapper,departmentsMapper,attendancesMapper,leaveInfosMapper,evection_infosMapper);
-        String strMonth=request.get("month");
-        String strYear=request.get("year");
-        String strWorkerNum=request.get("workerNum");
+        String strDate=request.get("date");
+        String[] date=strDate.split("-");
+        String strMonth=date[1];
+        String strYear=date[0];
+
+        String workerName=request.get("workerName");
+        //根据姓名查询员工编号
+        QueryWrapper<Workers> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("worker_name",workerName);
+        List<Workers> workers=workersMapper.selectList(queryWrapper);
+
         int month=Integer.parseInt(strMonth);
         int year=Integer.parseInt(strYear);
-        int workerNum=Integer.parseInt(strWorkerNum);
 
         List<MonthAttendance> result=new ArrayList<MonthAttendance>();
-        MonthAttendance monthAttendance=attendanceAnalyzer.analyze(workerNum,year,month);
-        result.add(monthAttendance);
+        if(workers.size()==0){
+            return result;
+        }
+        for(Workers worker:workers){
+            MonthAttendance monthAttendance=attendanceAnalyzer.analyze(worker.getWorkerNum(),year,month);
+            result.add(monthAttendance);
+        }
+
         return result;
 
     }

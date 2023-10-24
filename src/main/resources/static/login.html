@@ -91,13 +91,12 @@
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(formData),
                     success: function (response) {
-                        // 在这里可以处理后台返回的响应
-                        // 例如根据响应结果进行页面跳转或显示错误信息等
-                        console.log("Success" + response);
-                        if (response == 'success') {
-                            window.location.href = "user/" + username;
-                        } else {
+                        
+                        if (response == 'fail') {
                             alert("用户名或密码错误");
+                        } else {
+                            window.location.href = "user/" + response;
+                            
                         }
                     },
                     error: function (error) {
