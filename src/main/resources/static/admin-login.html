@@ -81,12 +81,12 @@
                 // 在这里可以添加验证逻辑，例如检查输入是否为空等
 
                 var formData = {
-                    userID: username,
+                    username: username,
                     password: password
                 };
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:8080/adminlogin",  // 替换为实际的后台处理URL
+                    url: "http://localhost:8080/admin/login",  // 替换为实际的后台处理URL
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(formData),
                     success: function (response) {

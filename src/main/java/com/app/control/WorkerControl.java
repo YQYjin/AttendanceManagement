@@ -61,6 +61,7 @@ public class WorkerControl {
         }
         return "fail";
     }
+
     //用户注册
     @PostMapping("/register")
     public String register(@RequestBody Map<String,String> data){
