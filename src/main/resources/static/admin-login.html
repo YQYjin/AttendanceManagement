@@ -47,14 +47,14 @@
 <body>
     <div class="container">
         <h2>管理员登录</h2>
-        <form id="loginForm">
+        <form method="post" action="http://localhost:8080/admin/login">
             <div class="form-group">
                 <label for="username" style="margin-right: 10px;">管理员用户名:</label>
-                <input type="text" class="form-control" id="username" placeholder="请输入管理员用户名" required>
+                <input type="text" class="form-control" name="username" id="username" placeholder="请输入管理员用户名" required>
             </div>
             <div class="form-group">
                 <label for="password" style="margin-right: 35px;">密码:</label>
-                <input type="password" class="form-control" id="password" placeholder="请输入密码" required>
+                <input type="password" class="form-control" name="password" id="password" placeholder="请输入密码" required>
             </div>
             <div class="button-group">
                 <button type="submit" class="btn btn-primary">登录</button>
@@ -63,50 +63,6 @@
         </form>
     </div>
 
-    <!-- 引入jQuery和Bootstrap的JavaScript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            // 监听表单提交事件
-            $("#loginForm").submit(function (event) {
-                event.preventDefault(); // 阻止表单的默认提交行为
-
-                // 获取输入的用户名和密码
-                var username = $("#username").val();
-                var password = $("#password").val();
-                console.log(username + " " + password);
-
-                // 在这里可以添加验证逻辑，例如检查输入是否为空等
-
-                var formData = {
-                    username: username,
-                    password: password
-                };
-                $.ajax({
-                    type: "POST",
-                    url: "http://localhost:8080/admin/login",  // 替换为实际的后台处理URL
-                    contentType: "application/json;charset=utf-8",
-                    data: JSON.stringify(formData),
-                    success: function (response) {
-                        // 在这里可以处理后台返回的响应
-                        // 例如根据响应结果进行页面跳转或显示错误信息等
-
-                        if (response == 'fail') {
-                            alert("用户名或密码错误");
-                        } else {
-                            window.location.href = "admin/" + response;
-                            
-                        }
-                    },
-                    error: function (error) {
-                        console.log("Error:" + error);
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>

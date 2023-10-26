@@ -27,30 +27,44 @@ public class SecurityTest extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .permitAll();*/
 
+        /*http
+                .authorizeRequests()
+                    .antMatchers("/user/{userID}").access("@myUserDetailsService.checkUserID(authentication, #userID)")
+                    .antMatchers("/user/info/{userID}").access("@myUserDetailsService.checkUserID(authentication, #userID)")
+                .and()
+                .formLogin()
+                .loginPage("/login.html")
+
+                .loginProcessingUrl("/login")
+
+                .permitAll();
+        http.csrf().disable();*/
         http
                 .antMatcher("/user/**")
 
                 .authorizeRequests()
-                    .antMatchers("/user/{userID}").access("@myUserDetailsService.checkUserID(authentication, #userID)")
-                    .antMatchers("/user/info/{userID}").access("@myUserDetailsService.checkUserID(authentication, #userID)")
+                .antMatchers("/user/{userID}").access("@myUserDetailsService.checkUserID(authentication, #userID)")
+                .antMatchers("/user/info/{userID}").access("@myUserDetailsService.checkUserID(authentication, #userID)")
 
-                    .and()
+                .and()
                 .formLogin()
-                    .loginPage("/login.html")
-                    .loginProcessingUrl("/user/login")
-                    .usernameParameter("username")
-                    .passwordParameter("password")
-                    .successHandler(new CustomAuthenticationSuccessHandler())
-                    .permitAll()
-                    .and()
+                .loginPage("/login.html")
+                .loginProcessingUrl("/user/login")
+
+                .successHandler(new CustomAuthenticationSuccessHandler())
+
+                .permitAll()
+                .and()
                 .logout()
-                    .logoutUrl("/userlogout")
-                    .logoutSuccessUrl("/login")
-                    .and()
+                .logoutUrl("/userlogout")
+                .logoutSuccessUrl("/login")
+                .and()
                 .exceptionHandling()
-                    .accessDeniedPage("/access-denied")
+                .accessDeniedPage("/access-denied")
                 .and()
                 .csrf().disable();
+
+
 
 
     }
