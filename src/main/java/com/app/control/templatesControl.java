@@ -9,7 +9,7 @@ public class templatesControl {
     public String workerControl(){
         return "workers-control";
     }
-    @GetMapping("/admin/department-control")
+    @GetMapping("/admin/departments-control")
     public String departmentControl(){
         return "department-control";
     }

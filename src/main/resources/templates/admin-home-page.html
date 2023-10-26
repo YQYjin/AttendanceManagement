@@ -82,6 +82,7 @@
                     <div class="layui-card-header custom-header" th:text="${userName+',欢迎来到管理界面!'}">
                     </div>
                     <div class="layui-card-body layui-edge-right">
+                        <a href="http://localhost:8080/admin/logout" class="layui-btn ">登出</a>
                         <button class="layui-btn " id="workersControl">员工管理</button>
                         <button class="layui-btn " id="departmentControl">部门管理</button>
                     </div>
@@ -324,11 +325,11 @@
                 getOneAttendanceData(table);
             });
             $("#workersControl").click(function () {
-                window.location.href = "http://localhost:8080/workers-control";
+                window.location.href = "http://localhost:8080/admin/workers-control";
             });
             $("#departmentControl").click(function () {
                 
-                window.location.href = "http://localhost:8080/department-control";
+                window.location.href = "http://localhost:8080/admin/departments-control";
             });
         });
     </script>

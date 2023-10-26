@@ -37,8 +37,12 @@
                     <div class="layui-card-header custom-header" th:text="${userName+',欢迎来到考勤系统!'}">
                     </div>
                     <div class="layui-card-body layui-edge-right">
-                        <button class="layui-btn " id="quitBtn">登出</button>
-                        <button class="layui-btn " id="userInfoBtn">个人信息</button>
+                            
+                        <form action="/user/logout" method="post">
+                            <input type="submit" class="layui-btn " value="登出">
+                            <button class="layui-btn " id="userInfoBtn">个人信息</button>
+                        </form>
+                        
                     </div>
                 </div>
             </div>
@@ -401,16 +405,16 @@
                 var userID = url.match(/\/user\/(\d+)$/)[1];
                 renderEvectionTable(table, userID);
             });
-            $("#quitBtn").click(function (event) {
-                event.preventDefault(); // 阻止表单的默认提交行为
-                //跳转到登录界面
-                window.location.href = "http://localhost:8080/login.html";
-            });
+            // $("#quitBtn").click(function (event) {
+            //     event.preventDefault(); // 阻止表单的默认提交行为
+            //     //跳转到登录界面
+            //     window.location.href = "http://localhost:8080/login.html";
+            // });
             $("#userInfoBtn").click(function (event) {
                 event.preventDefault(); // 阻止表单的默认提交行为
                 var url = window.location.href;
                 var userID = url.match(/\/user\/(\d+)$/)[1];
-                window.location.href = "http://localhost:8080/userinfo/" + userID;
+                window.location.href = "http://localhost:8080/user/info/" + userID;
             });
         });
     </script>
