@@ -78,7 +78,7 @@ function renderLeaveTable(table, userID) {
                 { field: 'reason', title: '原因' },
                 { field: 'type', width: 100, title: '类型' },
                 { field: 'isPass', width: 100, title: '状态' },
-                { fixed: 'right', width: 200, align: 'center', toolbar: '#bar', title: '操作' }
+
             ]],
             page: true
         });
@@ -107,8 +107,7 @@ function renderEvectionTable(table, userID) {
                 { field: 'startTime', width: 120, title: '开始时间' },
                 { field: 'endTime', width: 120, title: '结束时间' },
                 { field: 'reason', title: '原因' },
-                { field: 'isPass', width: 100, title: '状态' },
-                { fixed: 'right', width: 200, align: 'center', toolbar: '#bar', title: '操作' }
+                { field: 'isPass', width: 100, title: '状态' }
             ]],
             page: true
         });

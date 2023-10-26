@@ -1,9 +1,7 @@
 package com.app.control;
 
-import com.app.dataBase.Attendances;
-import com.app.dataBase.EvectionInfosWithName;
-import com.app.dataBase.LeaveInfoWithName;
-import com.app.dataBase.Leave_infos;
+import com.app.dataBase.*;
+import com.app.mapper.EvectionInfosMapper;
 import com.app.mapper.LeaveInfosMapper;
 import com.app.mapper.MyEvectionInfosMapper;
 import com.app.mapper.MyLeaveInfosMapper;
@@ -22,6 +20,8 @@ public class ApplyControl {
     private MyEvectionInfosMapper myEvectionInfosMapper;
     @Autowired
     private LeaveInfosMapper leaveInfosMapper;
+    @Autowired
+    private EvectionInfosMapper evectionInfosMapper;
     @GetMapping("/leave/all")
     public List<LeaveInfoWithName> getAllLeave(){
         List<LeaveInfoWithName> infos=myLeaveInfosMapper.selectAllLeaveWithName();
@@ -58,9 +58,10 @@ public class ApplyControl {
     @PostMapping("/evection/{evectionNum}/{isPass}")
     public String passEvection(@PathVariable String evectionNum,@PathVariable String isPass){
         System.out.println("出差审批:" + evectionNum + " " + isPass);
-        Leave_infos leave_infos=leaveInfosMapper.selectById(Integer.parseInt(evectionNum));
-        leave_infos.setIsPass(Byte.parseByte(isPass));
-        leaveInfosMapper.updateById(leave_infos);
+
+        Evection_infos evectionInfos=evectionInfosMapper.selectById(Integer.parseInt(evectionNum));
+        evectionInfos.setIsPass(Byte.parseByte(isPass));
+        evectionInfosMapper.updateById(evectionInfos);
         return "success";
     }
 }

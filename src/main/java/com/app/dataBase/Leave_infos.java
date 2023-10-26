@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class Leave_infos {
-    @TableId
+    @TableId(value = "leave_num")
     private int leaveNum;
     private int workerNum;
     private String type;

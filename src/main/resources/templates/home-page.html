@@ -53,14 +53,8 @@
             <!-- 左侧部分 -->
             <div class="layui-col-md6">
                 <div class="layui-card">
-                    <p>
-                        <br>
-                        <br>
-                        <br>
-                    </p>
-                    <div class="layui-card-header custom-header">
-
-                    </div>
+                    
+                    
                     <!-- <div class="layui-card-body layui-edge-right">
                         <button class="layui-btn " id="signInBtn">登出</button>
                         <button class="layui-btn " id="signOutBtn">个人信息</button>
@@ -91,14 +85,13 @@
                         <br>
                         <br>
                     </p>
-                    <div class="layui-card-header custom-header"></div>
+                    
                     <p>
+                        
                         <br>
                         <br>
                         <br>
-                        <br>
-                        <br>
-                        <br>
+                        
                         <br>
                         <br>
                     </p>
@@ -168,7 +161,7 @@
                         <br>
                     </p>
                     <div class="layui-card-header custom-header">审批结果</div>
-                    <div class="layui-card-body">
+                    <div class="layui-container">
                         <div class="layui-header custom-header">请假审批结果</div>
                         <!-- 这里设置display: none 是避免多余的表头显示 -->
                         <table class="layui-table" lay-filter="leaveInfoTable" id="leaveInfoTable"
@@ -183,7 +176,6 @@
                                     <th lay-data="{field:'reason'}">原因</th>
                                     <th lay-data="{field:'type', width:100}">类型</th>
                                     <th lay-data="{field:'isPass', width:100}">状态</th>
-                                    <th lay-data="{fixed:'right', width:150, align:'center', toolbar:'#bar'}">操作</th>
                                 </tr>
                             </thead>
                         </table>
@@ -203,7 +195,6 @@
                                     <th lay-data="{field:'endTime', width:150}">结束时间</th>
                                     <th lay-data="{field:'reason'}">原因</th>
                                     <th lay-data="{field:'isPass', width:100}">状态</th>
-                                    <th lay-data="{fixed:'right', width:150, align:'center', toolbar:'#bar'}">操作</th>
                                 </tr>
                             </thead>
                         </table>

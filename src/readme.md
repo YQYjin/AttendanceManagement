@@ -8,3 +8,4 @@
 
 - tool监听的是表格每一列的工具,而toolbar监听的是表格的工具栏,即表格上方的工具栏,注意区别
   table.on('tool(leaveInfoTable)', function (obj) {
+- 有时修改了js文件,但浏览器依旧获取到的是旧的js文件,原因是开启了缓存,解决方法f12- 网络-禁用缓存
