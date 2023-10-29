@@ -1,11 +1,13 @@
 package com.app.dataBase;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.sql.Date;
 
 @Data
 public class Monthly_attendances {
+    @TableId(value = "attendance_num")
     private int attendanceNum;
     private  int workerNum;
     private String monthTime;
@@ -13,5 +15,6 @@ public class Monthly_attendances {
     private  int sickLeave;
     private int generalLeave;
     private int evectionLeave;
-    private int overtime;
+    private int absence_times;
+    private double overtime;
 }

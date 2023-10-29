@@ -13,4 +13,13 @@ public class templatesControl {
     public String departmentControl(){
         return "department-control";
     }
+    @GetMapping("/loginpage")
+    public String loginControl(){
+        return "login-page";
+    }
+    @GetMapping("/adminloginpage")
+    public String adminLoginControl(){
+        return "admin-login-page";
+    }
+
 }

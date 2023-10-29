@@ -48,11 +48,11 @@ public class SecurityTest extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .formLogin()
-                .loginPage("/login.html")
+                .loginPage("/loginpage")
                 .loginProcessingUrl("/user/login")
 
                 .successHandler(new CustomAuthenticationSuccessHandler())
-
+                .failureHandler(new CustomAuthenticationFailureHandler())
                 .permitAll()
                 .and()
                 .logout()

@@ -12,4 +12,7 @@
         select evection_num, evection_infos.worker_num, reason, start_time, end_time, is_pass, worker_name
         from evection_infos join workers w on w.worker_num = evection_infos.worker_num where evection_infos.worker_num = #{worker_num};
     </select>
+    <select id="selectAllEvectionWithNameByIDProduce" resultType="com.app.dataBase.EvectionInfosWithName">
+        call SelectAllEvectionWithNameByID(#{worker_num, mode=IN, jdbcType=INTEGER});
+    </select>
 </mapper>

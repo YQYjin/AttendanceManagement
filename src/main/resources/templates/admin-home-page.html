@@ -162,7 +162,8 @@
                                         <input type="text" name="date" id="date" class="layui-input"
                                             placeholder="请输入年月">
                                     </div>
-                                    <button class="layui-btn" id="btnQueryAll">统计考勤结果</button>
+                                    <button class="layui-btn" id="btnAnalyzeAll">统计考勤结果</button>
+                                    <button class="layui-btn" id="btnQueryAll">查询考勤结果</button>
                                 </div>
                             </div>
                         </div>
@@ -317,6 +318,9 @@
             $(document).ready(function () {
                 renderLeaveTable(table);
                 renderEvectionTable(table);
+            });
+            $("#btnAnalyzeAll").click(function () {
+                analyzeAttendanceData();
             });
             $("#btnQueryAll").click(function () {
                 getAttendanceData(table);

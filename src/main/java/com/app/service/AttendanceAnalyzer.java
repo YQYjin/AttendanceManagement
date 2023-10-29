@@ -58,7 +58,8 @@ public class AttendanceAnalyzer {
         String leaveTime = getLeaveTime(departmentNum);
 
         //查询当月出勤记录
-        List<Attendances> attendancesList = attendancesMapper.selectMonthAttendance(workerNum, year, month);
+        //List<Attendances> attendancesList = attendancesMapper.selectMonthAttendance(workerNum, year, month);
+        List<Attendances> attendancesList = attendancesMapper.selectMonthAttendanceProcedure(workerNum, year, month);
         //遍历出勤记录，统计出勤情况
         //不统计缺勤,因为缺勤的记录不在数据库中,并且int数组初始值为0,而 ATTENDANCE_ABSENCE = 0
         if (attendancesList != null) {
@@ -69,7 +70,6 @@ public class AttendanceAnalyzer {
                 String[] parts = dayDate.split("-");
                 String dayStr = parts[2]; // 获取日期的天部分
                 int day = Integer.parseInt(dayStr);
-
 
                 String arriveTime = attendance.getArrivalTime();
                 String leaveTime1 = attendance.getLeaveTime();
@@ -124,7 +124,8 @@ public class AttendanceAnalyzer {
 
 
         //查询请假记录
-        List<Leave_infos> leave_infosList = leaveInfosMapper.selectMonthLeaveInfos(workerNum, year, month);
+        //List<Leave_infos> leave_infosList = leaveInfosMapper.selectMonthLeaveInfos(workerNum, year, month);
+        List<Leave_infos> leave_infosList = leaveInfosMapper.selectMonthLeaveInfosProcedure(workerNum, year, month);
         //遍历请假记录，修正出勤情况
         if (leave_infosList != null) {
             for (Leave_infos leave_info : leave_infosList) {
@@ -160,7 +161,8 @@ public class AttendanceAnalyzer {
             }
         }
         //查询出差记录
-        List<Evection_infos> evection_infosList = evection_infosMapper.selectMonthEvectionInfos(workerNum, year, month);
+        //List<Evection_infos> evection_infosList = evection_infosMapper.selectMonthEvectionInfos(workerNum, year, month);
+        List<Evection_infos> evection_infosList = evection_infosMapper.selectMonthEvectionInfosByProcedure(workerNum, year, month);
         //遍历出差记录，修正出勤情况
         if(evection_infosList != null) {
             for (Evection_infos evection_info : evection_infosList) {
@@ -208,7 +210,6 @@ public class AttendanceAnalyzer {
         Workers worker = workersMapper.selectById(workerNum);
         int departmentNum = worker.getDepartmentNum();
         return departmentNum;
-
     }
     private String getWorkerName(int workerNum) {
         Workers worker = workersMapper.selectById(workerNum);

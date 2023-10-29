@@ -128,7 +128,8 @@ public class WorkerControl {
     //获取用户信息
     @GetMapping("/getuserinfo/{userID}")
     public WorkerWIthDepartment getUserInfo(@PathVariable String userID){
-        return myWorkerMapper.selectWorkerWithDepartmentByID(Integer.parseInt(userID));
+        //return myWorkerMapper.selectWorkerWithDepartmentByID(Integer.parseInt(userID));
+        return myWorkerMapper.selectWorkerWithDepartmentByIDProduce(Integer.parseInt(userID));
     }
     @PostMapping("/worker/query")
     public WorkerWIthDepartment queryWorker(@RequestBody Map<String,String> data){
@@ -142,7 +143,8 @@ public class WorkerControl {
         if(worker==null) {
             return null;
         }
-        WorkerWIthDepartment res=myWorkerMapper.selectWorkerWithDepartmentByID(worker.getWorkerNum());
+        //WorkerWIthDepartment res=myWorkerMapper.selectWorkerWithDepartmentByID(worker.getWorkerNum());
+        WorkerWIthDepartment res=myWorkerMapper.selectWorkerWithDepartmentByIDProduce(worker.getWorkerNum());
         return res;
     }
 

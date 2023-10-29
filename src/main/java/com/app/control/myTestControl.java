@@ -1,10 +1,13 @@
 package com.app.control;
 
+import com.app.dataBase.Evection_infos;
 import com.app.mapper.*;
 import com.app.service.AttendanceAnalyzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class myTestControl {
@@ -27,5 +30,11 @@ public class myTestControl {
         attendanceAnalyzer.analyze(1,2023,10);
 
         return "success";
+    }
+    @GetMapping("/test/process")
+    public List<Evection_infos> processTest(){
+        List<Evection_infos> res=evection_infosMapper.selectMonthEvectionInfosByProcedure(1,2023,10);
+
+        return res;
     }
 }

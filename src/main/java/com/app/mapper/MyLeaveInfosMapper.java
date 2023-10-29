@@ -10,4 +10,5 @@ public interface MyLeaveInfosMapper{
     public List<LeaveInfoWithName> selectAllLeaveWithName();
 
     public List<LeaveInfoWithName> selectAllLeaveWithNameByID(int worker_num);
+    public List<LeaveInfoWithName> selectAllLeaveWithNameByIDProduce(int worker_num);
 }

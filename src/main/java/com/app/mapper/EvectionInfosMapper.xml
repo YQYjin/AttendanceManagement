@@ -9,5 +9,12 @@
         select * from evection_infos where YEAR(start_time) = #{year} and ( MONTH(start_time) = #{month} or MONTH(end_time) = #{month})
                                     and worker_num = #{worker_num};
     </select>
-
+    <select id="selectMonthEvectionInfosByProcedure" resultType="com.app.dataBase.Evection_infos">
+        <!-- 查询某月的请假记录,包括跨月的情况  -->
+        call GetEvectionInfos(
+        #{year, mode=IN, jdbcType=INTEGER},
+        #{month, mode=IN, jdbcType=INTEGER},
+        #{worker_num, mode=IN, jdbcType=INTEGER}
+        )
+    </select>
 </mapper>

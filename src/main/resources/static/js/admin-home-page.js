@@ -50,6 +50,28 @@ function getEvectionData(callback) {
         }
     });
 }
+// 统计考勤信息
+function analyzeAttendanceData() {
+    let monthAndYear = {
+        date: $("#date").val()
+    };
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/analyze/all",
+        contentType: "application/json;charset=utf-8",
+        data: JSON.stringify(monthAndYear),
+        success: function (response) {
+            if(response == "success"){
+            	window.alert("统计成功");
+            }else{
+            	window.alert("统计失败");
+            }
+        },
+        error: function (error) {
+            console.log("Error:" + error);
+        }
+    });
+}
 // 获取考勤信息
 function getAttendanceData(table) {
     let monthAndYear = {
@@ -57,7 +79,7 @@ function getAttendanceData(table) {
     };
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/analyze/all",
+        url: "http://localhost:8080/query/all",
         contentType: "application/json;charset=utf-8",
         data: JSON.stringify(monthAndYear),
         success: function (response) {
@@ -98,7 +120,7 @@ function getOneAttendanceData(table) {
     };
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/analyze/one",
+        url: "http://localhost:8080/query/one",
         contentType: "application/json;charset=utf-8",
         data: JSON.stringify(monthAndYear),
         success: function (response) {

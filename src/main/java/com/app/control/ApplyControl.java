@@ -36,14 +36,16 @@ public class ApplyControl {
     public List<LeaveInfoWithName> getLeaveByID(@PathVariable String userID){
         //将userID转为整形
         int id=Integer.parseInt(userID);
-        List<LeaveInfoWithName> infos=myLeaveInfosMapper.selectAllLeaveWithNameByID(id);
+        //List<LeaveInfoWithName> infos=myLeaveInfosMapper.selectAllLeaveWithNameByID(id);
+        List<LeaveInfoWithName> infos=myLeaveInfosMapper.selectAllLeaveWithNameByIDProduce(id);
         return infos;
     }
     @GetMapping("/evection/{userID}")
     public List<EvectionInfosWithName> getEvectionByID(@PathVariable String userID){
         //将userID转为整形
         int id=Integer.parseInt(userID);
-        List<EvectionInfosWithName> infos=myEvectionInfosMapper.selectAllEvectionWithNameByID(id);
+        //List<EvectionInfosWithName> infos=myEvectionInfosMapper.selectAllEvectionWithNameByID(id);
+        List<EvectionInfosWithName> infos=myEvectionInfosMapper.selectAllEvectionWithNameByIDProduce(id);
         return infos;
     }
     @PostMapping("/leave/{leaveNum}/{isPass}")

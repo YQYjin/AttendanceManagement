@@ -9,4 +9,9 @@
         from workers join departments d on d.department_num = workers.department_num where worker_num=#{worker_num};
     </select>
 
+    <select id="selectWorkerWithDepartmentByIDProduce" resultType="com.app.dataBase.WorkerWIthDepartment">
+        call SelectWorkerWithDepartmentByID(#{worker_num, mode=IN, jdbcType=INTEGER});
+    </select>
+
+
 </mapper>

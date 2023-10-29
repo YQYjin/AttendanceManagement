@@ -37,6 +37,7 @@ public class AdminSecurity extends WebSecurityConfigurerAdapter {
                 .loginPage("/admin-login.html")
                 .loginProcessingUrl("/admin/login")
                 .successHandler(new AdminAuthenticationSuccessHandler())
+                .failureHandler(new AdminAuthenticationFailureHandler())
                 .permitAll()
                 .and()
                 .logout()

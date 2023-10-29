@@ -10,5 +10,14 @@
         and worker_num = #{worker_num};
     </select>
 
+    <select id="selectMonthLeaveInfosProcedure" resultType="com.app.dataBase.Leave_infos">
+        <!-- 查询某月的请假记录,包括跨月的情况  -->
+        call GetLeaveInfos(
+        #{year, mode=IN, jdbcType=INTEGER},
+        #{month, mode=IN, jdbcType=INTEGER},
+        #{worker_num, mode=IN, jdbcType=INTEGER}
+        );
+    </select>
+
 
 </mapper>
