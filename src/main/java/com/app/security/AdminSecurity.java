@@ -34,7 +34,7 @@ public class AdminSecurity extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .formLogin()
-                .loginPage("/admin-login.html")
+                .loginPage("/adminloginpage")
                 .loginProcessingUrl("/admin/login")
                 .successHandler(new AdminAuthenticationSuccessHandler())
                 .failureHandler(new AdminAuthenticationFailureHandler())
@@ -42,7 +42,7 @@ public class AdminSecurity extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutUrl("/admin/logout")
-                .logoutSuccessUrl("/admin-login.html")
+                .logoutSuccessUrl("/adminloginpage")
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/access-denied")

@@ -29,7 +29,7 @@ public class MonthAttendance {
     public String isFullAttendance;
 
      public void print(){
-         System.out.println("编号:"+workerNum);
+         System.out.println("员工编号:"+workerNum);
          System.out.println("年:"+year+"月:"+month);
          System.out.println("出勤情况:");
          for(int i=1;i<attendances.length;i++) {

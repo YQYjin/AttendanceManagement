@@ -32,6 +32,7 @@ public class WorkerControl {
     public String getUsers() {
         Gson gson=new Gson();
         List<Workers> users=workerMapper.selectList(null);
+
         System.out.println(users.get(0).getWorkerNum());
         String json=gson.toJson(users);
         return json;
@@ -42,10 +43,13 @@ public class WorkerControl {
         String workerName=data.get("userID");
         String password=data.get("password");
         System.out.println("用户名为:"+workerName+"用户密码为:"+password);
+
         //根据用户名查询用户id
         QueryWrapper<Workers> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("worker_name",workerName);
         Workers res=workerMapper.selectOne(queryWrapper);
+
+
         if(res==null) {
             return "fail";
         }
@@ -75,7 +79,11 @@ public class WorkerControl {
         //根据部门名称查询ID
         QueryWrapper<Departments> depQueryWrapper = new QueryWrapper<>();
         depQueryWrapper.eq("department_name",departmentName);
-        int department=departmentsMapper.selectOne(depQueryWrapper).getDepartmentNum();
+        Departments departments=departmentsMapper.selectOne(depQueryWrapper);
+        if(departments==null){
+            return "noinfo";
+        }
+        int department=departments.getDepartmentNum();
 
 
         //输出用户所有信息
@@ -286,6 +294,10 @@ public class WorkerControl {
                 //根据部门名称查询部门ID
                 QueryWrapper<Departments> queryWrapper = new QueryWrapper<>();
                 queryWrapper.eq("department_name",newData);
+                Departments departments=departmentsMapper.selectOne(queryWrapper);
+                if(departments==null){
+                    return "noinfo";
+                }
                 int departmentID=departmentsMapper.selectOne(queryWrapper).getDepartmentNum();
                 //根据id修改数据
                 Workers worker=workerMapper.selectById(id);

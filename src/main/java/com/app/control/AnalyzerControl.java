@@ -76,7 +76,7 @@ public class AnalyzerControl {
 
             monthly_attendances.setOvertime(monthAttendance.overtimeHours);
 
-            monthly_attendances.setAbsence_times(monthAttendance.absenceTimes);
+            monthly_attendances.setAbsenceTimes(monthAttendance.absenceTimes);
 
             //根据员工编号和月份查询数据库,如果有记录,则更新,否则插入
             QueryWrapper<Monthly_attendances> queryWrapper=new QueryWrapper<>();
@@ -184,7 +184,7 @@ public class AnalyzerControl {
             monthAttendance.personalTimes=monthly_attendances.getGeneralLeave();
             monthAttendance.evectionTimes=monthly_attendances.getEvectionLeave();
             monthAttendance.overtimeHours=monthly_attendances.getOvertime();
-            monthAttendance.absenceTimes=monthly_attendances.getAbsence_times();
+            monthAttendance.absenceTimes=monthly_attendances.getAbsenceTimes();
             //根据员工编号查询员工姓名
             QueryWrapper<Workers> queryWrapper=new QueryWrapper<>();
             queryWrapper.eq("worker_num",monthly_attendances.getWorkerNum());
@@ -208,6 +208,9 @@ public class AnalyzerControl {
         QueryWrapper<Workers> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("worker_name",workerName);
         Workers workers=workersMapper.selectOne(queryWrapper);
+        if(workers==null){
+            return null;
+        }
 
         int month=Integer.parseInt(strMonth);
         int year=Integer.parseInt(strYear);
@@ -230,7 +233,7 @@ public class AnalyzerControl {
             monthAttendance.personalTimes=monthly_attendances.getGeneralLeave();
             monthAttendance.evectionTimes=monthly_attendances.getEvectionLeave();
             monthAttendance.overtimeHours=monthly_attendances.getOvertime();
-            monthAttendance.absenceTimes=monthly_attendances.getAbsence_times();
+            monthAttendance.absenceTimes=monthly_attendances.getAbsenceTimes();
 
             monthAttendance.workerName=workerName;
 

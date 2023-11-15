@@ -56,14 +56,14 @@ function getEvectionData(callback) {
 }
 
 // 渲染请假表格
-function renderLeaveTable(table, userID) {
+function renderLeaveTable(table) {
     // 获取请假信息
     var leaveInfoData;
     // 由于ajax是异步请求,因此需要在回调函数中获取数据,并渲染表格
     getLeaveData(function (response) {
         leaveInfoData = response;
         // 渲染表格
-        //  var table = layui.table;
+        //var table = layui.table;
         table.render({
             elem: '#leaveInfoTable',
             data: leaveInfoData,
@@ -78,15 +78,14 @@ function renderLeaveTable(table, userID) {
                 { field: 'reason', title: '原因' },
                 { field: 'type', width: 100, title: '类型' },
                 { field: 'isPass', width: 100, title: '状态' },
-
             ]],
             page: true
         });
-    }, userID);
+    });
 }
 
 // 渲染出差表格
-function renderEvectionTable(table, userID) {
+function renderEvectionTable(table) {
     // 获取出差信息
     var evectionInfoData;
     // 由于ajax是异步请求,因此需要在回调函数中获取数据,并渲染表格
@@ -94,7 +93,7 @@ function renderEvectionTable(table, userID) {
         evectionInfoData = response;
         //console.log(JSON.stringify(evectionInfoData))
         // 渲染表格
-        // var table = layui.table;
+        //var table = layui.table;
         table.render({
             elem: '#evectionInfoTable',
             data: evectionInfoData,

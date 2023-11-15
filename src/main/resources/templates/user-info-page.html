@@ -46,7 +46,7 @@
                         <br>
                         <br>
                     </p>
-                    <div class="layui-card-header custom-header" th:text="${userName+',欢迎来到管理界面!'}">
+                    <div class="layui-card-header custom-header" th:text="${userName+',欢迎来到用户信息界面!'}">
                     </div>
                     <div class="layui-card-body layui-edge-right">
                         <button class="layui-btn " id="backBtn">返回</button>
@@ -175,7 +175,7 @@
                                 <P>
                                     <label class="layui-form-label">原密码</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" id="oldpassword" class="layui-input" placeholder="请输入原密码">
+                                    <input type="password" id="oldpassword" class="layui-input" placeholder="请输入原密码">
                                 </div>
                                 <button class="layui-btn" id="passwordModifyBtn">提交</button>
                                 </P>
@@ -184,7 +184,7 @@
                                 <label class="layui-form-label">新的密码</label>
 
                                 <div class="layui-input-inline">
-                                    <input type="text" id="newpassword1" class="layui-input" placeholder="请输入新的密码">
+                                    <input type="password" id="newpassword1" class="layui-input" placeholder="请输入新的密码">
                                 </div>
 
                             </div>
@@ -192,7 +192,7 @@
                                 <label class="layui-form-label">确认密码</label>
 
                                 <div class="layui-input-inline">
-                                    <input type="text" id="newpassword2" class="layui-input" placeholder="请再次输入新的密码">
+                                    <input type="password" id="newpassword2" class="layui-input" placeholder="请再次输入新的密码">
                                 </div>
 
                             </div>
@@ -265,6 +265,10 @@
 
                 if (newGender == "") {
                     alert("性别不能为空");
+                    return;
+                }
+                if(newGender!="男"&&newGender!="女"){
+                    alert("性别只能为男或女");
                     return;
                 }
                 $.ajax({
@@ -354,6 +358,7 @@
                 
                 window.history.back();
             }
+            );
         });
 
         function loadUserInfo(userID) {

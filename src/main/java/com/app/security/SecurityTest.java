@@ -57,7 +57,7 @@ public class SecurityTest extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutUrl("/user/logout")
-                .logoutSuccessUrl("/login.html")
+                .logoutSuccessUrl("/loginpage")
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/access-denied")

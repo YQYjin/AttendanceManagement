@@ -406,6 +406,7 @@
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(formData), //将表单转换为JSON格式
                     success: function (response) {
+                        
                         console.log("Success" + response);
                         if (response == 'success') {
                             window.alert("修改成功");
@@ -424,6 +425,7 @@
 
 
             $("#btnBack").click(function () {
+                
                 window.history.back();
             });
         });
@@ -443,8 +445,9 @@
                 contentType: "application/json;charset=utf-8",
                 data: JSON.stringify(formData),
                 success: function (response) {
-                    if(response == null){
+                    if(response == null||response == ""){
                             window.alert("未查询到该部门");
+                            callback(response);
                             return;
                         }
                     callback(response);

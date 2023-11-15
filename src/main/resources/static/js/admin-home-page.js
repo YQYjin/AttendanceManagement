@@ -52,6 +52,15 @@ function getEvectionData(callback) {
 }
 // 统计考勤信息
 function analyzeAttendanceData() {
+    inputDate = $("#date").val();
+    nowDate = new Date();
+    //判断输入年月是否大于当前年月
+    
+    if (inputDate >= nowDate.getFullYear() + "-" + (nowDate.getMonth() + 1)) {
+        window.alert("只能统计本月之前的考勤信息,请重新输入年月");
+        return;
+    }
+
     let monthAndYear = {
         date: $("#date").val()
     };
@@ -114,9 +123,22 @@ function getAttendanceData(table) {
     });
 }
 function getOneAttendanceData(table) {
+    inputDate = $("#date2").val();
+    nowDate = new Date();
+    //判断输入年月是否大于当前年月
+    
+    if (inputDate >= nowDate.getFullYear() + "-" + (nowDate.getMonth() + 1)) {
+        window.alert("只能统计本月之前的考勤信息,请重新输入年月");
+        return;
+    }
+    let workerName  = $("#workerName").val();
+    if(workerName == ""){
+        window.alert("请输入员工姓名");
+        return;
+    }
     let monthAndYear = {
-        date: $("#date").val(),
-        workerName: $("#workerName").val()
+        date: inputDate,
+        workerName: workerName
     };
     $.ajax({
         type: "POST",
@@ -126,7 +148,10 @@ function getOneAttendanceData(table) {
         success: function (response) {
 
             let attendanceData = response;
-
+            if(response==""||response==null){
+                window.alert("未查询到该员工");
+                return;
+            }
             console.log(attendanceData);
             table.render({
                 elem: '#oneAttendanceTable',

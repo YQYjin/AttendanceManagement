@@ -46,7 +46,12 @@ public class homeControl {
     }
     @GetMapping("/user/info/{userID}")
     public String userInfoPage(@PathVariable String userID, Model model){
-        //model.addAttribute("userName",userID);
+        // 根据ID查询用户名
+        QueryWrapper<Workers> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("worker_num",userID);
+        Workers worker=workersMapper.selectOne(queryWrapper);
+        String userName=worker.getWorkerName();
+        model.addAttribute("userName",userName);
         return "user-info-page";
     }
 }

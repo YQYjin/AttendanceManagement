@@ -15,6 +15,6 @@ public class Monthly_attendances {
     private  int sickLeave;
     private int generalLeave;
     private int evectionLeave;
-    private int absence_times;
+    private int absenceTimes;
     private double overtime;
 }

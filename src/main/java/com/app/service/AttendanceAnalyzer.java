@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,6 +33,7 @@ public class AttendanceAnalyzer {
     }
 
     public MonthAttendance analyze(int workerNum, int year, int month) {
+        System.out.println("analyze:"+"员工编号:"+workerNum+"年:"+year+"月:"+month);
 
         MonthAttendance monthAttendance = srcAttendanceSummary(workerNum, year, month);
 
@@ -64,7 +67,7 @@ public class AttendanceAnalyzer {
         //不统计缺勤,因为缺勤的记录不在数据库中,并且int数组初始值为0,而 ATTENDANCE_ABSENCE = 0
         if (attendancesList != null) {
             for (Attendances attendance : attendancesList) {
-
+                System.out.println("出勤编号:"+attendance.getAttendanceNum());
                 //获取日期
                 String dayDate = attendance.getDayTime();
                 String[] parts = dayDate.split("-");
@@ -73,7 +76,11 @@ public class AttendanceAnalyzer {
 
                 String arriveTime = attendance.getArrivalTime();
                 String leaveTime1 = attendance.getLeaveTime();
-
+                System.out.print("到达时间:" + arriveTime + " 离开时间:" + leaveTime1+"上班时间:"+workTime+"下班时间:"+leaveTime);
+                //判断是否有下班时间,若下班时间为空则改日缺勤
+                if (leaveTime1 == null) {
+                    continue;
+                }
                 //计算加班时间
                 if (leaveTime1.compareTo(leaveTime) > 0) {
                     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -108,7 +115,7 @@ public class AttendanceAnalyzer {
                 else if (arriveTime.compareTo(workTime) > 0 && leaveTime1.compareTo(leaveTime) < 0) {
                     monthAttendance.attendances[day] = MonthAttendance.ATTENDANCE_LATE_AND_LEAVE_EARLY;
                 }
-
+                System.out.println(" 出勤情况:" + monthAttendance.attendances[day]);
             }
         }
         System.out.println("原始数据");
@@ -122,6 +129,14 @@ public class AttendanceAnalyzer {
         int month = data.month;
         int workerNum = data.workerNum;
 
+        //根据周末进行修正,如果是周末,都设为正常出勤
+        for(int day=1;day<data.attendances.length;++day){
+            LocalDate date = LocalDate.of(year, month, day);
+            if(isWeekend(date)){
+                data.attendances[day]=MonthAttendance.ATTENDANCE_NORMAL;
+            }
+        }
+
 
         //查询请假记录
         //List<Leave_infos> leave_infosList = leaveInfosMapper.selectMonthLeaveInfos(workerNum, year, month);
@@ -130,7 +145,7 @@ public class AttendanceAnalyzer {
         if (leave_infosList != null) {
             for (Leave_infos leave_info : leave_infosList) {
                 //跳过未审批通过的记录
-                if (leave_info.getIsPass() == 0) {
+                if (leave_info.getIsPass() != 1) {
                     continue;
                 }
                 String strStartDate = leave_info.getStartTime();
@@ -167,7 +182,7 @@ public class AttendanceAnalyzer {
         if(evection_infosList != null) {
             for (Evection_infos evection_info : evection_infosList) {
                 //跳过未审批通过的记录
-                if (evection_info.getIsPass() == 0) {
+                if (evection_info.getIsPass() != 1) {
                     continue;
                 }
                 String strStartDate = evection_info.getStartTime();
@@ -193,7 +208,10 @@ public class AttendanceAnalyzer {
         }
         //遍历,统计缺勤次数:
         for (int day = 1; day < data.attendances.length; ++day) {
-            if (data.attendances[day] == MonthAttendance.ATTENDANCE_ABSENCE) {
+            //既不是正常出勤也不是出差请假,则为缺勤
+
+            if (data.attendances[day] != MonthAttendance.ATTENDANCE_NORMAL&&data.attendances[day]!=MonthAttendance.ATTENDANCE_EVECTION
+                    &&data.attendances[day]!=MonthAttendance.ATTENDANCE_PERSONAL_LEAVE&&data.attendances[day]!=MonthAttendance.ATTENDANCE_SICK_LEAVE) {
                 data.absenceTimes += 1;
             }
         }
@@ -227,5 +245,9 @@ public class AttendanceAnalyzer {
         Departments department = departmentsMapper.selectById(departmentNum);
         String leaveTime = department.getClosingTime();
         return leaveTime;
+    }
+    private static boolean isWeekend(LocalDate date) {
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        return dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY;
     }
 }

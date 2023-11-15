@@ -331,7 +331,11 @@
                 var salary = $("#workerSalary").val();
                 var phone = $("#workerPhone").val();
                 var department = $("#workerDepartment").val();
-
+                // 如果存在一项为空,返回
+                if (username == null || username == "" || salary == null || salary == "" || phone == null || phone == "" || department == null || department == "") {
+                    
+                    return;
+                }
                 var formData = {
                     username: username,
                     gender: gender,
@@ -350,8 +354,10 @@
                         if (response === "success") {
                             alert("注册成功");
                         }
-                        else {
+                        else if(response==="fail") {
                             alert("注册失败,该用户已存在");
+                        }else if(response=="noinfo"){
+                            alert("注册失败,不存在该部门")
                         }
                     },
                     error: function (response) {
@@ -578,8 +584,8 @@
                             window.alert("修改成功");
                             refreshQuery();
 
-                        } else {
-                            window.alert("修改失败" + response);
+                        } else if(response=="noinfo") {
+                            window.alert("修改失败,不存在该部门");
                         }
                     },
                     error: function (error) {
