@@ -14,4 +14,5 @@ public class Evection_infos {
     private String   startTime;
     private String   endTime;
     private byte isPass;
+    private String opinion;
 }

@@ -67,7 +67,7 @@ public class WorkerControl {
     }
 
     //用户注册
-    @PostMapping("/register")
+    @PostMapping("/admin/register")
     public String register(@RequestBody Map<String,String> data){
         System.out.println("用户注册");
         //获取用户信息
@@ -139,7 +139,7 @@ public class WorkerControl {
         //return myWorkerMapper.selectWorkerWithDepartmentByID(Integer.parseInt(userID));
         return myWorkerMapper.selectWorkerWithDepartmentByIDProduce(Integer.parseInt(userID));
     }
-    @PostMapping("/worker/query")
+    @PostMapping("/admin/worker/query")
     public WorkerWIthDepartment queryWorker(@RequestBody Map<String,String> data){
         String workerName=data.get("workerName");
         System.out.println("用户查询的用户名为:"+workerName);
@@ -226,7 +226,7 @@ public class WorkerControl {
         }
         return "wrong password";
     }
-    @PostMapping("/worker/modify")
+    @PostMapping("/admin/worker/modify")
     public String modify(@RequestBody Map<String,String> data){
         String id=data.get("workerID");
         String type=data.get("type");

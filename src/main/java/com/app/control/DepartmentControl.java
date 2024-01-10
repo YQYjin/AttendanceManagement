@@ -16,7 +16,7 @@ public class DepartmentControl {
     @Autowired
     private DepartmentsMapper departmentsMapper;
 
-    @PostMapping("/department/register")
+    @PostMapping("/admin/department/register")
     public String register(@RequestBody Map<String,String> data){
         String name=data.get("departmentName");
         String startTime=data.get("start_time");
@@ -41,7 +41,7 @@ public class DepartmentControl {
         return "success";
     }
 
-    @PostMapping("/department/query")
+    @PostMapping("/admin/department/query")
     public Departments query(@RequestBody Map<String,String> data){
         String name=data.get("departmentName");
 
@@ -56,7 +56,7 @@ public class DepartmentControl {
         return res;
     }
 
-    @PostMapping("/department/modify")
+    @PostMapping("/admin/department/modify")
     public String modify(@RequestBody Map<String,String> data){
         String id=data.get("departmentNum");
         String type=data.get("type");

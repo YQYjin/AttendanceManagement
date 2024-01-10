@@ -25,10 +25,18 @@ public class AdminSecurity extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .permitAll();*/
 
+
         http.antMatcher("/admin/**")
                 .authorizeRequests()
                 .antMatchers("/admin/workers-control").hasRole("ADMIN")
                 .antMatchers("/admin/departments-control").hasRole("ADMIN")
+                .antMatchers("/admin/worker/**").hasRole("ADMIN")
+                .antMatchers("/admin/register").hasRole("ADMIN")
+                .antMatchers("/admin/department/**").hasRole("ADMIN")
+                .antMatchers("/admin/leave/**").hasRole("ADMIN")
+                .antMatchers("/admin/evection/**").hasRole("ADMIN")
+                .antMatchers("/admin/query/**").hasRole("ADMIN")
+                .antMatchers("/admin/analyze/all").hasRole("ADMIN")
                 .antMatchers("/admin/{userID}").access("@adminUserDetailsService.checkUserID(authentication, #userID)")
 
 
@@ -37,6 +45,7 @@ public class AdminSecurity extends WebSecurityConfigurerAdapter {
                 .loginPage("/adminloginpage")
                 .loginProcessingUrl("/admin/login")
                 .successHandler(new AdminAuthenticationSuccessHandler())
+
                 .failureHandler(new AdminAuthenticationFailureHandler())
                 .permitAll()
                 .and()

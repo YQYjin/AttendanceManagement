@@ -11,4 +11,5 @@ public class EvectionInfosWithName {
     private String endTime;
     private byte isPass;
     private String workerName;
+    private String opinion;
 }

@@ -234,48 +234,23 @@
         </div>
     </div>
 
-
-
-    <!-- <a href="register.html" class="btn btn-primary">新员工注册</a>
-
-    <div class="layui-container">
-        <h1 class="layui-header">请假信息列表</h1> -->
-    <!-- 这里设置display: none 是避免多余的表头显示 -->
-    <!-- <table class="layui-table" lay-filter="leaveInfoTable" id="leaveInfoTable" style="display: none;">
-            <thead>
-                <tr>
-                    <th lay-data="{field:'leaveNum', width:100}">请假编号</th>
-                    <th lay-data="{field:'workerNum', width:100}">员工编号</th>
-                    <th lay-data="{field:'workerName', width:100}">员工名称</th>
-                    <th lay-data="{field:'startTime', width:150}">开始时间</th>
-                    <th lay-data="{field:'endTime', width:150}">结束时间</th>
-                    <th lay-data="{field:'reason'}">原因</th>
-                    <th lay-data="{field:'type', width:100}">类型</th>
-                    <th lay-data="{field:'isPass', width:100}">状态</th>
-                    <th lay-data="{fixed:'right', width:150, align:'center', toolbar:'#bar'}">操作</th>
-                </tr>
-            </thead>
-        </table>
+    <!-- 弹窗内容 -->
+    <div id="approvePopup" style="display: none;" class="layui-card-body">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">意见:</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="approveOpinion" id="opinion" required lay-verify="required" placeholder="请输入审批意见" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="button" class="layui-btn " id="okBtn">确定</button>
+                    <button type="button" class="layui-btn " id="cancelBtn">取消</button>
+                </div>
+            </div>
+        </form>
     </div>
-
-    <div class="layui-container">
-        <h1 class="layui-header">出差信息列表</h1> -->
-    <!-- 这里设置display: none 是避免多余的表头显示 -->
-    <!-- <table class="layui-table" lay-filter="evectionInfoTable" id="evectionInfoTable" style="display: none;">
-            <thead>
-                <tr>
-                    <th lay-data="{field:'evectionNum', width:100}">出差编号</th>
-                    <th lay-data="{field:'workerNum', width:100}">员工编号</th>
-                    <th lay-data="{field:'employeeName', width:100}">员工名称</th>
-                    <th lay-data="{field:'startTime', width:150}">开始时间</th>
-                    <th lay-data="{field:'endTime', width:150}">结束时间</th>
-                    <th lay-data="{field:'reason'}">原因</th>
-                    <th lay-data="{field:'isPass', width:100}">状态</th>
-                    <th lay-data="{fixed:'right', width:150, align:'center', toolbar:'#bar'}">操作</th>
-                </tr>
-            </thead>
-        </table>
-    </div> -->
 
     <!-- 引入jQuery和Bootstrap的JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -296,8 +271,8 @@
 
 
     <script>
-        layui.use(['table', 'form', 'laydate'], function () {
-
+        layui.use(['table', 'form', 'laydate','layer'], function () {
+            var layer = layui.layer;
             var table = layui.table;
             var laydate = layui.laydate;
             var url=window.location.href;
@@ -316,7 +291,7 @@
             // 调用函数渲染表格
             // 页面加载完成时渲染表格
             $(document).ready(function () {
-                renderLeaveTable(table);
+                renderLeaveTable(table,layer);
                 renderEvectionTable(table);
             });
             $("#btnAnalyzeAll").click(function () {
@@ -334,6 +309,10 @@
             $("#departmentControl").click(function () {
                 
                 window.location.href = "http://localhost:8080/admin/departments-control";
+            });
+            // 用于关闭弹窗
+            $("#cancelBtn").on("click", function() {
+                layer.closeAll();
             });
         });
     </script>

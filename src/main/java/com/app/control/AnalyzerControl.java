@@ -36,7 +36,7 @@ public class AnalyzerControl {
     private MonthlyAttendancesMapper monthlyAttendancesMapper;
 
     //统计某月的考勤结果
-    @PostMapping("/analyze/all")
+    @PostMapping("/admin/analyze/all")
     public String analyzeAll(@RequestBody Map<String, String> request){
         AttendanceAnalyzer attendanceAnalyzer=new AttendanceAnalyzer(workersMapper,departmentsMapper,attendancesMapper,leaveInfosMapper,evection_infosMapper);
 
@@ -150,7 +150,7 @@ public class AnalyzerControl {
 
     }*/
     //查询某月的考勤结果
-    @PostMapping("/query/all")
+    @PostMapping("/admin/query/all")
     public List<MonthAttendance> queryAll(@RequestBody Map<String, String> request){
 
         List<Workers> allWorkers=workersMapper.selectList(null);
@@ -195,7 +195,7 @@ public class AnalyzerControl {
         }
         return result;
     }
-    @PostMapping("/query/one")
+    @PostMapping("/admin/query/one")
     public List<MonthAttendance> queryOne(@RequestBody Map<String, String> request){
 
         String strDate=request.get("date");

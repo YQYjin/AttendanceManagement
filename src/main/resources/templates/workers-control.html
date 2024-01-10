@@ -346,7 +346,7 @@
                 //发送ajax请求
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:8080/register",
+                    url: "http://localhost:8080/admin/register",
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(formData),
                     success: function (response) {
@@ -378,7 +378,7 @@
                 };
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:8080/worker/query",
+                    url: "http://localhost:8080/admin/worker/query",
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(formData),
                     success: function (response) {
@@ -419,7 +419,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:8080/worker/modify",  // 替换为实际的后台处理URL
+                    url: "http://localhost:8080/admin/worker/modify",  // 替换为实际的后台处理URL
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(formData), //将表单转换为JSON格式
                     success: function (response) {
@@ -461,7 +461,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:8080/worker/modify",  // 替换为实际的后台处理URL
+                    url: "http://localhost:8080/admin/worker/modify",  // 替换为实际的后台处理URL
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(formData), //将表单转换为JSON格式
                     success: function (response) {
@@ -499,7 +499,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:8080/worker/modify",  // 替换为实际的后台处理URL
+                    url: "http://localhost:8080/admin/worker/modify",  // 替换为实际的后台处理URL
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(formData), //将表单转换为JSON格式
                     success: function (response) {
@@ -537,7 +537,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:8080/worker/modify",  // 替换为实际的后台处理URL
+                    url: "http://localhost:8080/admin/worker/modify",  // 替换为实际的后台处理URL
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(formData), //将表单转换为JSON格式
                     success: function (response) {
@@ -575,7 +575,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:8080/worker/modify",  // 替换为实际的后台处理URL
+                    url: "http://localhost:8080/admin/worker/modify",  // 替换为实际的后台处理URL
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(formData), //将表单转换为JSON格式
                     success: function (response) {
@@ -607,7 +607,7 @@
             };
             $.ajax({
                 type: "POST",
-                url: "http://localhost:8080/worker/query",
+                url: "http://localhost:8080/admin/worker/query",
                 contentType: "application/json;charset=utf-8",
                 data: JSON.stringify(formData),
                 success: function (response) {
@@ -640,7 +640,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:8080/worker/modify",  // 替换为实际的后台处理URL
+                    url: "http://localhost:8080/admin/worker/modify",  // 替换为实际的后台处理URL
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(formData), //将表单转换为JSON格式
                     success: function (response) {
